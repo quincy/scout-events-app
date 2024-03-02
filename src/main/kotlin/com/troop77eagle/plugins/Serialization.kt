@@ -1,4 +1,4 @@
-package com.quakbo.plugins
+package com.troop77eagle.plugins
 
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application

@@ -11,12 +11,12 @@ plugins {
   id("com.diffplug.spotless") version "6.25.0"
 }
 
-group = "com.quakbo"
+group = "com.troop77eagle"
 
 version = "0.0.1"
 
 application {
-  mainClass.set("com.quakbo.ApplicationKt")
+  mainClass.set("com.troop77eagle.ApplicationKt")
 
   val isDevelopment: Boolean = project.ext.has("development")
   applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")

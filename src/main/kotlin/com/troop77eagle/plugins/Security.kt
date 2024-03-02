@@ -1,4 +1,4 @@
-package com.quakbo.plugins
+package com.troop77eagle.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm

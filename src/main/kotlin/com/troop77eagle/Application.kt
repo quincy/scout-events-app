@@ -1,10 +1,10 @@
-package com.quakbo
+package com.troop77eagle
 
-import com.quakbo.plugins.configureHTTP
-import com.quakbo.plugins.configureMonitoring
-import com.quakbo.plugins.configureRouting
-import com.quakbo.plugins.configureSecurity
-import com.quakbo.plugins.configureSerialization
+import com.troop77eagle.plugins.configureHTTP
+import com.troop77eagle.plugins.configureMonitoring
+import com.troop77eagle.plugins.configureRouting
+import com.troop77eagle.plugins.configureSecurity
+import com.troop77eagle.plugins.configureSerialization
 import io.ktor.server.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty

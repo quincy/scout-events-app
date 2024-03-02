@@ -1,6 +1,6 @@
-package com.quakbo
+package com.troop77eagle
 
-import com.quakbo.plugins.configureRouting
+import com.troop77eagle.plugins.configureRouting
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
