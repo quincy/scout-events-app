@@ -32,7 +32,7 @@ sdkman_auto_env=true
 ## Build
 To build the project use the following gradle command:
 ```shell
-./gradlew clean spotlessApply detekt build
+./gradlew clean spotlessApply detekt build check
 ```
 
 If you're using IntellIj, a Run Configuration called 
