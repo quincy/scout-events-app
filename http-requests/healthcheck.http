@@ -1,0 +1,4 @@
+### run healthcheck
+GET http://localhost:8080/healthcheck
+
+###

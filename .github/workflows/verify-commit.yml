@@ -1,0 +1,40 @@
+name: CI Verify Commit
+
+on:
+  # https://docs.github.com/en/actions/using-workflows/reusing-workflows
+  workflow_call:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'src/go.mod'
+          cache-dependency-path: src/go.sum
+      - name: Install dependencies
+        run: |
+          cd src
+          go get .
+      - name: Build
+        run: |
+          cd src
+          go build -v ./...
+      - name: Install playwright drivers
+        run: |
+          cd src
+          go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+      - name: Start containers
+        run: |
+          docker compose up -d
+          sleep 10
+      - name: Run Tests
+        run: |
+          cd src
+          go run main.go &
+          go test -v ./...

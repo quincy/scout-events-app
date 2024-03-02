@@ -1,0 +1,19 @@
+### Create an event
+PUT http://fly.io:8080/api/v1/events
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Hells Canyon 2024",
+  "startTime": "2024-05-03T16:30-08:00",
+  "endTime": "2024-05-05T15:00-08:00",
+  "summary": "Canoeing, backpack stove cooking, 3hr drive one way",
+  "description": "This is a canoeing focused activity trip with rank requirement and selected merit badge requirement opportunities.  Other activities may be offered by the patrol assigned to the campout. Please pack your gear in a duffel bag/backpack/dry bag and bring a large garbage bag.  We are not planning on bringing the troop trailer.  Bring a daypack with your 10-essentials for the day paddle.  Bring appropriate clothing.  You can check the weather at Oxbow, Oregon for updates.  Plan to use backpacking stoves for cooking within your patrol.  Meal plan your food accordingly with 1-2 pots.  Cooks should plan for 6 meals; 1-SAT breakfast, 2-SAT lunch, 3-SAT Dinner, 4-SUN breakfast, 5-SUN lunch, 6-Snacks.  We are bringing 8 canoes on a trailer plus at least 2 more.  You are welcome to bring your own USCG approved life jacket with a WHISTLE.  Any other watercraft needs to be approved by the adult trip leader.  Swim tests are mandatory for being on the water.",
+  "eventLocation": "Big Bar Camping Area, Hells Canyon, ID",
+  "assemblyLocation": "Eagle Hills Church",
+  "pickupLocation": "Eagle Hills Church"
+}
+
+### Fetch an event by its id
+GET http://localhost:8080/api/v1/events/1
+Accept: application/json

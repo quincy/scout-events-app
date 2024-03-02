@@ -1,0 +1,55 @@
+# Create initial events table
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: quincy
+      changes:
+        - createTable:
+            tableName: events
+            remarks: Contains the events data
+            columns:
+              - column:
+                  remarks: The unique id of this events
+                  name: id
+                  type: text
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  remarks: The name of the events
+                  name: name
+                  type: text
+              - column:
+                  remarks: The timestamp at which the events starts
+                  name: start_time
+                  type: timestamp with timezone
+              - column:
+                  remarks: The timestamp at which the events ends
+                  name: end_time
+                  type: timestamp with timezone
+              - column:
+                  remarks: The summary, or short description, of the events
+                  name: summary
+                  type: text
+              - column:
+                  remarks: The full description of the events
+                  name: description
+                  type: text
+              - column:
+                  remarks: The location of the events
+                  name: event_location
+                  type: text
+              - column:
+                  remarks: The location where scouts will assemble before the events begins
+                  name: assembly_location
+                  type: text
+              - column:
+                  remarks: The location where scouts will be picked up from when the events is over
+                  name: pickup_location
+                  type: text
+        - sql:
+            dbms: postgresql
+            splitStatements: true
+            sql: |-
+              -- Grant permissions to the 'app' user
+              GRANT SELECT, INSERT, UPDATE, DELETE ON events TO app;

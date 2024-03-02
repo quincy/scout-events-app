@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+  # https://docs.github.com/en/actions/using-workflows/reusing-workflows
+  workflow_call:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    concurrency: deploy-group # prevents concurrent actions
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: cert
+        run: curl --create-dirs -o root.crt 'https://cockroachlabs.cloud/clusters/0de3351e-57c1-4910-836d-5504d3dae7fc/cert'
+
+      - uses: liquibase-github-actions/update@v4.27.0
+        with:
+          url: ${{ secrets.LIQUIBASE_URL }}
+          username: ${{ secrets.LIQUIBASE_USERNAME }}
+          password: ${{ secrets.LIQUIBASE_PASSWORD }}
+          changelogFile: db/changelog/changelog-root.yaml
+          rollbackOnError: true
+          showSummary: verbose
+
+      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
