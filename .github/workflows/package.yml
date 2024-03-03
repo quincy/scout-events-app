@@ -9,7 +9,6 @@ env:
 
 jobs:
   package:
-    if: ${{ env.GITHUB_REF_TYPE }} == 'tag'
 
     runs-on: ubuntu-latest
     permissions:
