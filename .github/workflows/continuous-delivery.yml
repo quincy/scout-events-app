@@ -1,0 +1,21 @@
+name: Deploy Latest
+
+on:
+  create:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    uses: ./.github/workflows/ci-verify-commit.yml
+
+  dependency-submission:
+    uses: ./.github/workflows/dependency-submission.yml
+
+  package:
+    if: ${{ env.GITHUB_REF_TYPE }} == 'tag'
+    uses: ./.github/workflows/package.yml

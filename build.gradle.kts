@@ -12,8 +12,7 @@ plugins {
 }
 
 group = "com.troop77eagle"
-
-version = "0.0.1"
+version = "0.0.1-dev"
 
 application {
   mainClass.set("com.troop77eagle.ApplicationKt")
@@ -66,5 +65,14 @@ spotless {
     trimTrailingWhitespace()
     indentWithSpaces(2)
     endWithNewline()
+  }
+}
+
+ktor {
+  docker {
+    jreVersion.set(JavaVersion.VERSION_17)
+
+    localImageName.set("scout-events-app")
+    imageTag.set("1.0-dev")
   }
 }

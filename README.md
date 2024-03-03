@@ -3,7 +3,7 @@
 
 ## Dev Setup
 
-### SDKMAN!
+### SDKs
 This project uses [SDKMAN!](https://sdkman.io/) to manage things like the Gradle version.
 See the [.sdkmanrc](.sdkmanrc) file to see which versions of the tools it will install.
 
@@ -29,11 +29,28 @@ Or you can set the following configuration in your `~/.sdkman/etc/config` file:
 sdkman_auto_env=true
 ```
 
-## Build
-To build the project use the following gradle command:
-```shell
-./gradlew clean spotlessApply detekt build check
-```
+### Docker
+If you want to run the app locally in a docker container, you'll need docker.  Follow the instructions
+at [docker.com](https://docs.docker.com/get-docker/).
 
-If you're using IntellIj, a Run Configuration called 
-[pre-commit build](.idea/runConfigurations/pre_commit_build.xml) is included.
+
+## Build
+If you're using Intellij, there are Run Configurations available in the repository:
+- [pre-commit build](.idea/runConfigurations/pre_commit_build.xml)
+  - run before committing
+  - ```shell
+    ./gradlew clean spotlessApply detekt build check
+    ```
+- [build docker image](.idea/runConfigurations/build_docker_image.xml)
+  - run to build the docker file locally
+  - ```shell
+    docker build -t scout-events-app .
+    ```
+
+## Running the app locally
+Use the [run app](.idea/runConfigurations/run_app.xml) Run Configuration in IntelliJ.
+
+If you want to run the docker container you built above:
+```shell
+docker run scout-events-app
+```
