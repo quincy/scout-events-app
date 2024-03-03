@@ -17,5 +17,5 @@ jobs:
     uses: ./.github/workflows/dependency-submission.yml
 
   package:
-    if: ${{ env.GITHUB_REF_TYPE }} == 'tag'
+    if: ${{ github.ref_type }} == 'tag'
     uses: ./.github/workflows/package.yml
