@@ -1,6 +1,7 @@
 name: Package
 
 on:
+  # https://docs.github.com/en/actions/using-workflows/reusing-workflows
   workflow_call:
 
 env:

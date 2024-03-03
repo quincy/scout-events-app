@@ -1,7 +1,7 @@
 name: CI Verify Commit
-# https://docs.github.com/en/actions/using-workflows/reusing-workflows
 
 on:
+  # https://docs.github.com/en/actions/using-workflows/reusing-workflows
   workflow_call:
 
 jobs:
