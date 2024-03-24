@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="run app" type="JetRunConfigurationType">
+    <option name="MAIN_CLASS_NAME" value="com.troop77eagle.ApplicationKt" />
+    <module name="scout-events-app.main" />
+    <shortenClasspath name="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
