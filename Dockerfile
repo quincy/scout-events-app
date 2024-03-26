@@ -7,4 +7,4 @@ FROM openjdk:17
 EXPOSE 8080:8080
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/scout-events-app-all.jar /app/app.jar
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["java", "-Xmx200m", "-jar", "/app/app.jar"]
