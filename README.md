@@ -52,5 +52,5 @@ Use the [run app](.idea/runConfigurations/run_app.xml) Run Configuration in Inte
 
 If you want to run the docker container you built above:
 ```shell
-docker run --cpus=1 --memory=200m scout-events-app
+docker run --cpus=1 --memory=200m -p 8080:8080 scout-events-app
 ```
