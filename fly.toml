@@ -19,3 +19,23 @@ primary_region = 'sea'
 
 [[vm]]
   size = 'shared-cpu-1x'
+
+[[services.http_checks]]
+  interval = "10s"
+  grace_period = "5s"
+  method = "get"
+  path = "/healthcheck"
+  protocol = "http"
+  timeout = "2s"
+  tls_skip_verify = false
+  [services.http_checks.headers]
+
+[[services.http_checks]]
+  interval = "60s"
+  grace_period = "5s"
+  method = "get"
+  path = "/deepcheck"
+  protocol = "http"
+  timeout = "2s"
+  tls_skip_verify = false
+  [services.http_checks.headers]

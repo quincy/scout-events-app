@@ -47,6 +47,7 @@ dependencies {
   // test
   testImplementation("io.ktor:ktor-server-tests-jvm")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
+  testImplementation("io.mockk:mockk:1.13.10")
 }
 
 idea { module { isDownloadSources = true } }

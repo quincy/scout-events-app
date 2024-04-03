@@ -1,0 +1,7 @@
+### healthcheck
+GET http://localhost:8080/healthcheck
+Accept: application/json
+
+### deepcheck
+GET http://localhost:8080/deepcheck
+Accept: application/json
