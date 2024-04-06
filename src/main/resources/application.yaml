@@ -1,0 +1,12 @@
+ktor:
+  application:
+    modules:
+      - com.troop77eagle.ApplicationKt.module
+
+db:
+  app: "scout-events"
+  host: $DB_HOST
+  port: $DB_PORT
+  database: "$DB_DATABASE:scouting"
+  username: $DB_USERNAME
+  password: $DB_PASSWORD

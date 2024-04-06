@@ -17,6 +17,10 @@ primary_region = 'sea'
   min_machines_running = 0
   processes = ['app']
 
+[env]
+  LOG_LEVEL = "info"
+  DB_DATABASE = "scouting"
+
 [[vm]]
   size = 'shared-cpu-1x'
 

@@ -24,6 +24,7 @@ application {
 repositories { mavenCentral() }
 
 dependencies {
+  // ktor
   implementation("io.ktor:ktor-server-content-negotiation-jvm")
   implementation("io.ktor:ktor-server-core-jvm")
   implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
@@ -42,7 +43,15 @@ dependencies {
   implementation("io.ktor:ktor-server-webjars-jvm")
   implementation("org.webjars:jquery:3.7.1")
 
+  // logging
   implementation("ch.qos.logback:logback-classic:$logbackVersion")
+  implementation("io.github.oshai:kotlin-logging-jvm:6.0.3")
+
+  // database
+  implementation("org.postgresql:postgresql:42.7.3")
+  implementation(platform("org.jdbi:jdbi3-bom:3.45.1"))
+  implementation("org.jdbi:jdbi3-core")
+  implementation("org.jdbi:jdbi3-kotlin")
 
   // test
   testImplementation("io.ktor:ktor-server-tests-jvm")

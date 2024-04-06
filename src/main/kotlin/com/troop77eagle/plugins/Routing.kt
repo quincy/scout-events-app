@@ -16,8 +16,9 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.ktor.server.webjars.Webjars
+import org.jdbi.v3.core.Jdbi
 
-fun Application.configureRouting() {
+fun Application.configureRouting(jdbi: Jdbi) {
   install(Webjars) {
     path = "/webjars" // defaults to /webjars
   }
@@ -30,7 +31,7 @@ fun Application.configureRouting() {
   install(AutoHeadResponse)
 
   val basicHealthcheck = BasicHealthcheck()
-  val deepHealthcheck = DeepHealthcheck()
+  val deepHealthcheck = DeepHealthcheck(jdbi)
 
   routing {
     get("/") { call.respondText("Hello World!") }
