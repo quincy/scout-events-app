@@ -1,7 +1,8 @@
 name: Deploy Latest
 
 on:
-  create:
+  push:
+    branches: [ "main" ]
 
 env:
   REGISTRY: ghcr.io
