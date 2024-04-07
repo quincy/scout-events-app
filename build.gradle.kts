@@ -62,9 +62,6 @@ dependencies {
 idea { module { isDownloadSources = true } }
 
 spotless {
-  // optional: limit format enforcement to just the files changed by this feature branch
-  ratchetFrom("origin/main")
-
   kotlin { ktfmt() }
 
   format("misc") {

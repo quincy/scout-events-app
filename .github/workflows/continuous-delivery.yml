@@ -17,3 +17,6 @@ jobs:
 
   package:
     uses: ./.github/workflows/package.yml
+
+  deploy:
+    uses: ./.github/workflows/deploy.yml
