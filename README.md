@@ -48,9 +48,31 @@ If you're using Intellij, there are Run Configurations available in the reposito
     ```
 
 ## Running the app locally
+You'll need to first create the docker-compose environment, which will start a local version of the database:
+```shell
+docker-compose up
+```
+
 Use the [run app](.idea/runConfigurations/run_app.xml) Run Configuration in IntelliJ.
 
 If you want to run the docker container you built above:
 ```shell
 docker run --cpus=1 --memory=200m -p 8080:8080 scout-events-app
 ```
+
+### Running liquibase
+
+Check the status
+```shell
+~/.sdkman/candidates/liquibase/current/bin/liquibase status --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting
+```
+Check what SQL will be run
+```shell
+~/.sdkman/candidates/liquibase/current/bin/liquibase update-sql --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting
+```
+Run the liquibase migration
+```shell
+~/.sdkman/candidates/liquibase/current/bin/liquibase update --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting
+```
+
+

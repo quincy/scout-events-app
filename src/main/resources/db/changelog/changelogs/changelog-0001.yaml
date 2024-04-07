@@ -1,0 +1,37 @@
+# Create initial events table
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: quincy
+      changes:
+        - createTable:
+            tableName: events
+            remarks: Contains the event data
+            columns:
+              - column:
+                  remarks: The unique id of this event
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  generationType: ALWAYS
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  remarks: The name of the event
+                  name: name
+                  type: TEXT
+              - column:
+                  remarks: The date on which the event starts
+                  name: start_date
+                  type: DATE
+              - column:
+                  remarks: The date on which the event ends
+                  name: end_date
+                  type: DATE
+        - sql:
+            dbms: postgresql
+            splitStatements: true
+            sql: |-
+              -- Grant permissions to the 'app' user
+              GRANT SELECT, INSERT, UPDATE, DELETE ON events TO app;
