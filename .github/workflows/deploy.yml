@@ -22,7 +22,7 @@ jobs:
 
       - uses: liquibase-github-actions/update@v4.27.0
         with:
-          url: ${{ secrets.LIQUIBASE_URL }}
+          url: "${{ secrets.LIQUIBASE_URL }}"
           username: ${{ secrets.LIQUIBASE_USERNAME }}
           password: ${{ secrets.LIQUIBASE_PASSWORD }}
           changelogFile: src/main/resources/db/changelog/changelog-root.yaml
