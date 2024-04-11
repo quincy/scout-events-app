@@ -23,9 +23,4 @@ jobs:
   deploy:
     needs: build
     uses: ./.github/workflows/deploy.yml
-    with:
-      LIQUIBASE_URL: ${{ secrets.LIQUIBASE_URL }}
-      LIQUIBASE_USERNAME: ${{ secrets.LIQUIBASE_USERNAME }}
-      LIQUIBASE_PASSWORD: ${{ secrets.LIQUIBASE_PASSWORD }}
-      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     secrets: inherit
