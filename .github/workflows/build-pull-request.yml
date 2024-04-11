@@ -1,11 +1,9 @@
 name: CI Build Branch
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-    uses: ./.github/workflows/ci-verify-commit.yml
+    uses: ./.github/workflows/verify-commit.yml

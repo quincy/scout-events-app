@@ -1,4 +1,4 @@
-name: Deploy Latest
+name: CD Pipeline
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
 
 jobs:
   build:
-    uses: ./.github/workflows/ci-verify-commit.yml
+    uses: ./.github/workflows/verify-commit.yml
 
   dependency-submission:
     uses: ./.github/workflows/dependency-submission.yml
