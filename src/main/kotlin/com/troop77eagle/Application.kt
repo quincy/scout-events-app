@@ -1,5 +1,8 @@
 package com.troop77eagle
 
+import com.troop77eagle.events.EventsDAO
+import com.troop77eagle.events.EventsResource
+import com.troop77eagle.events.EventsService
 import com.troop77eagle.plugins.configureHTTP
 import com.troop77eagle.plugins.configureMonitoring
 import com.troop77eagle.plugins.configureRouting
@@ -11,6 +14,10 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import javax.sql.DataSource
 import org.jdbi.v3.core.Jdbi
+import org.jdbi.v3.core.kotlin.KotlinPlugin
+import org.jdbi.v3.sqlobject.SqlObjectPlugin
+import org.jdbi.v3.sqlobject.kotlin.KotlinSqlObjectPlugin
+import org.jdbi.v3.sqlobject.kotlin.onDemand
 import org.postgresql.ds.PGSimpleDataSource
 
 fun main() {
@@ -20,22 +27,32 @@ fun main() {
 
 fun Application.module() {
   val datasource = createDatasource(environment.config.config("db"))
+  val jdbi = getJdbi(datasource)
 
   configureSerialization()
   configureMonitoring()
   configureHTTP()
   configureSecurity()
-  configureRouting(Jdbi.create(datasource))
+  configureRouting(jdbi, getEventsResource(jdbi))
 }
 
-fun createDatasource(dbConfig: ApplicationConfig): DataSource {
-  return PGSimpleDataSource().apply {
-    applicationName = dbConfig.property("app").getString()
-    serverNames = arrayOf(dbConfig.property("host").getString())
-    portNumbers = IntArray(dbConfig.property("port").getString().toInt())
-    databaseName = dbConfig.property("database").getString()
-    user = dbConfig.property("username").getString()
-    password = dbConfig.property("password").getString()
-    sslmode = "verify-full"
-  }
-}
+fun Application.createDatasource(dbConfig: ApplicationConfig): DataSource =
+    PGSimpleDataSource().apply {
+      applicationName = dbConfig.property("app").getString()
+      serverNames = arrayOf(dbConfig.property("host").getString())
+      portNumbers = IntArray(dbConfig.property("port").getString().toInt())
+      databaseName = dbConfig.property("database").getString()
+      user = dbConfig.property("username").getString()
+      password = dbConfig.property("password").getString()
+      sslmode = "verify-full"
+    }
+
+fun Application.getEventsResource(jdbi: Jdbi): EventsResource =
+    EventsResource(EventsService.create(jdbi.onDemand<EventsDAO>()))
+
+fun getJdbi(datasource: DataSource): Jdbi =
+    Jdbi.create(datasource).apply {
+      installPlugin(KotlinPlugin())
+      installPlugin(SqlObjectPlugin())
+      installPlugin(KotlinSqlObjectPlugin())
+    }

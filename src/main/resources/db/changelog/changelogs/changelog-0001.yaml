@@ -11,24 +11,44 @@ databaseChangeLog:
               - column:
                   remarks: The unique id of this event
                   name: id
-                  type: BIGINT
+                  type: bigint
                   autoIncrement: true
-                  generationType: ALWAYS
+                  generationType: always
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   remarks: The name of the event
                   name: name
-                  type: TEXT
+                  type: text
               - column:
-                  remarks: The date on which the event starts
-                  name: start_date
-                  type: DATE
+                  remarks: The timestamp at which the event starts
+                  name: start_time
+                  type: timestamp with timezone
               - column:
-                  remarks: The date on which the event ends
-                  name: end_date
-                  type: DATE
+                  remarks: The timestamp at which the event ends
+                  name: end_time
+                  type: timestamp with timezone
+              - column:
+                  remarks: The summary, or short description, of the event
+                  name: summary
+                  type: text
+              - column:
+                  remarks: The full description of the event
+                  name: description
+                  type: text
+              - column:
+                  remarks: The location of the event
+                  name: event_location
+                  type: text
+              - column:
+                  remarks: The location where scouts will assemble before the event begins
+                  name: assembly_location
+                  type: text
+              - column:
+                  remarks: The location where scouts will be picked up from when the event is over
+                  name: pickup_location
+                  type: text
         - sql:
             dbms: postgresql
             splitStatements: true

@@ -12,6 +12,7 @@ plugins {
 }
 
 group = "com.troop77eagle"
+
 version = "0.0.1-dev"
 
 application {
@@ -23,11 +24,14 @@ application {
 
 repositories { mavenCentral() }
 
+val testcontainersVersion = "1.19.7"
+
 dependencies {
   // ktor
-  implementation("io.ktor:ktor-server-content-negotiation-jvm")
+  implementation("io.ktor:ktor-server-content-negotiation")
+  implementation("io.ktor:ktor-client-content-negotiation")
   implementation("io.ktor:ktor-server-core-jvm")
-  implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
+  implementation("io.ktor:ktor-serialization-kotlinx-json")
   implementation("io.ktor:ktor-server-call-logging-jvm")
   implementation("io.ktor:ktor-server-call-id-jvm")
   implementation("io.ktor:ktor-server-cors-jvm")
@@ -49,20 +53,37 @@ dependencies {
 
   // database
   implementation("org.postgresql:postgresql:42.7.3")
+  implementation("com.zaxxer:HikariCP:5.1.0")
   implementation(platform("org.jdbi:jdbi3-bom:3.45.1"))
   implementation("org.jdbi:jdbi3-core")
   implementation("org.jdbi:jdbi3-kotlin")
+  //  implementation("org.jdbi:jdbi3-sqlobject")
+  implementation("org.jdbi:jdbi3-kotlin-sqlobject")
+
+  // datetime
+  implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
 
   // test
   testImplementation("io.ktor:ktor-server-tests-jvm")
+  testImplementation("io.kotest.extensions:kotest-assertions-ktor-jvm:2.0.0")
+  testImplementation("io.kotest:kotest-runner-junit5:5.8.1")
+  testImplementation("org.junit.jupiter:junit-jupiter-params")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
   testImplementation("io.mockk:mockk:1.13.10")
+
+  // testcontainers
+  testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
+  testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
+  testImplementation("io.kotest.extensions:kotest-extensions-testcontainers:2.0.1")
+  testImplementation("org.testcontainers:cockroachdb:$testcontainersVersion")
+  testImplementation("org.liquibase:liquibase-core:4.27.0")
 }
 
 idea { module { isDownloadSources = true } }
 
 spotless {
   kotlin { ktfmt() }
+  kotlinGradle { ktfmt() }
 
   format("misc") {
     // define the files to apply `misc` to
@@ -83,3 +104,5 @@ ktor {
     imageTag.set("1.0-dev")
   }
 }
+
+tasks.withType<Test>().configureEach { useJUnitPlatform() }

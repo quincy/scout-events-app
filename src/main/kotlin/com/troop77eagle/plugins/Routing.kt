@@ -2,6 +2,8 @@ package com.troop77eagle.plugins
 
 import com.troop77eagle.checks.BasicHealthcheck
 import com.troop77eagle.checks.DeepHealthcheck
+import com.troop77eagle.events.EventsResource
+import com.troop77eagle.events.eventsRoute
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
@@ -14,11 +16,12 @@ import io.ktor.server.resources.Resources
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
+import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import io.ktor.server.webjars.Webjars
 import org.jdbi.v3.core.Jdbi
 
-fun Application.configureRouting(jdbi: Jdbi) {
+fun Application.configureRouting(jdbi: Jdbi, eventsResource: EventsResource) {
   install(Webjars) {
     path = "/webjars" // defaults to /webjars
   }
@@ -53,6 +56,9 @@ fun Application.configureRouting(jdbi: Jdbi) {
     //       Get all articles ...
     //      call.respond("List of articles sorted starting from ${article.sort}")
     //    }
+
+    // REST API
+    route("/api/v1") { eventsRoute(eventsResource) }
   }
 }
 

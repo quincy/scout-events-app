@@ -24,7 +24,7 @@ import org.jdbi.v3.core.Jdbi
 class ApplicationTest {
   @Test
   fun testRoot() = testApplication {
-    application { configureRouting(mockk()) }
+    application { configureRouting(mockk(), mockk()) }
     client.get("/").apply {
       assertEquals(HttpStatusCode.OK, status)
       assertEquals("Hello World!", bodyAsText())
@@ -34,7 +34,7 @@ class ApplicationTest {
   @Test
   fun `healthcheck is healthy`() = testApplication {
     install(ContentNegotiation) { json(Json { prettyPrint = true }) }
-    application { configureRouting(mockk()) }
+    application { configureRouting(mockk(), mockk()) }
     client.get("/healthcheck").apply {
       assertEquals(HttpStatusCode.OK, status)
       assertEquals(mapOf("service" to "ok"), Json.decodeFromString(bodyAsText()))
@@ -48,7 +48,8 @@ class ApplicationTest {
       configureRouting(
           mockk<Jdbi> {
             every<Handle> { open() } returns mockk<Handle> { every { close() } just Runs }
-          })
+          },
+          mockk())
     }
     client
         .get("/deepcheck") { this.header(HttpHeaders.Accept, ContentType.Application.Json) }
@@ -65,7 +66,8 @@ class ApplicationTest {
       configureRouting(
           mockk<Jdbi> {
             every<Handle?> { open() } throws ConnectionException(IllegalStateException())
-          })
+          },
+          mockk())
     }
     client
         .get("/deepcheck") { this.header(HttpHeaders.Accept, ContentType.Application.Json) }
