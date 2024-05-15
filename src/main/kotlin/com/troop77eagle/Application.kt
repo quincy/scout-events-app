@@ -3,6 +3,7 @@ package com.troop77eagle
 import com.troop77eagle.events.EventsDAO
 import com.troop77eagle.events.EventsResource
 import com.troop77eagle.events.EventsService
+import com.troop77eagle.events.InstantMapper
 import com.troop77eagle.plugins.configureHTTP
 import com.troop77eagle.plugins.configureMonitoring
 import com.troop77eagle.plugins.configureRouting
@@ -13,6 +14,7 @@ import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import javax.sql.DataSource
+import kotlinx.datetime.Instant
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.sqlobject.SqlObjectPlugin
@@ -55,4 +57,5 @@ fun getJdbi(datasource: DataSource): Jdbi =
       installPlugin(KotlinPlugin())
       installPlugin(SqlObjectPlugin())
       installPlugin(KotlinSqlObjectPlugin())
+      registerColumnMapper(Instant::class.java, InstantMapper())
     }

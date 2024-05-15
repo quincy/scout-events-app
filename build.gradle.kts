@@ -61,7 +61,7 @@ dependencies {
   implementation("org.jdbi:jdbi3-kotlin-sqlobject")
 
   // datetime
-  implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
 
   // test
   testImplementation("io.ktor:ktor-server-tests-jvm")
