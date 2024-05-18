@@ -1,6 +1,7 @@
 package com.troop77eagle
 
 import com.troop77eagle.plugins.configureRouting
+import com.troop77eagle.plugins.jsonConfig
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
@@ -33,7 +34,7 @@ class ApplicationTest {
 
   @Test
   fun `healthcheck is healthy`() = testApplication {
-    install(ContentNegotiation) { json(Json { prettyPrint = true }) }
+    install(ContentNegotiation) { json(jsonConfig()) }
     application { configureRouting(mockk(), mockk()) }
     client.get("/healthcheck").apply {
       assertEquals(HttpStatusCode.OK, status)
@@ -43,7 +44,7 @@ class ApplicationTest {
 
   @Test
   fun `deepcheck is healthy`() = testApplication {
-    install(ContentNegotiation) { json(Json { prettyPrint = true }) }
+    install(ContentNegotiation) { json(jsonConfig()) }
     application {
       configureRouting(
           mockk<Jdbi> {
@@ -61,7 +62,7 @@ class ApplicationTest {
 
   @Test
   fun `deepcheck is because database is unhealthy`() = testApplication {
-    install(ContentNegotiation) { json(Json { prettyPrint = true }) }
+    install(ContentNegotiation) { json(jsonConfig()) }
     application {
       configureRouting(
           mockk<Jdbi> {

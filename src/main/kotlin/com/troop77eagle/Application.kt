@@ -11,8 +11,7 @@ import com.troop77eagle.plugins.configureSecurity
 import com.troop77eagle.plugins.configureSerialization
 import io.ktor.server.application.Application
 import io.ktor.server.config.ApplicationConfig
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.server.netty.EngineMain
 import javax.sql.DataSource
 import kotlinx.datetime.Instant
 import org.jdbi.v3.core.Jdbi
@@ -22,10 +21,7 @@ import org.jdbi.v3.sqlobject.kotlin.KotlinSqlObjectPlugin
 import org.jdbi.v3.sqlobject.kotlin.onDemand
 import org.postgresql.ds.PGSimpleDataSource
 
-fun main() {
-  embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-      .start(wait = true)
-}
+fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module() {
   val datasource = createDatasource(environment.config.config("db"))
@@ -38,18 +34,18 @@ fun Application.module() {
   configureRouting(jdbi, getEventsResource(jdbi))
 }
 
-fun Application.createDatasource(dbConfig: ApplicationConfig): DataSource =
+fun createDatasource(dbConfig: ApplicationConfig): DataSource =
     PGSimpleDataSource().apply {
       applicationName = dbConfig.property("app").getString()
       serverNames = arrayOf(dbConfig.property("host").getString())
-      portNumbers = IntArray(dbConfig.property("port").getString().toInt())
+      portNumbers = intArrayOf(dbConfig.property("port").getString().toInt())
       databaseName = dbConfig.property("database").getString()
       user = dbConfig.property("username").getString()
       password = dbConfig.property("password").getString()
       sslmode = "verify-full"
     }
 
-fun Application.getEventsResource(jdbi: Jdbi): EventsResource =
+fun getEventsResource(jdbi: Jdbi): EventsResource =
     EventsResource(EventsService.create(jdbi.onDemand<EventsDAO>()))
 
 fun getJdbi(datasource: DataSource): Jdbi =

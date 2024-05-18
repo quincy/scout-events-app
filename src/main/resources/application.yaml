@@ -1,15 +1,17 @@
 ktor:
+  deployment:
+    port: 8080
   application:
     modules:
       - com.troop77eagle.ApplicationKt.module
 
 db:
   app: "scout-events"
-  host: $DB_HOST
-  port: $DB_PORT
+  host: "$DB_HOST:localhost"
+  port: "$DB_PORT:26257"
   database: "$DB_DATABASE:scouting"
-  username: $DB_USERNAME
-  password: $DB_PASSWORD
+  username: "$DB_USERNAME:"
+  password: "$DB_PASSWORD:"
   liquibase:
-    username: $DB_LIQUIBASE_USERNAME
-    password: $DB_LIQUIBASE_PASSWORD
+    username: "$DB_LIQUIBASE_USERNAME:"
+    password: "$DB_LIQUIBASE_PASSWORD:"

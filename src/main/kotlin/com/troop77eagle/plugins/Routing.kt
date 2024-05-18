@@ -16,6 +16,7 @@ import io.ktor.server.http.content.staticResources
 import io.ktor.server.plugins.NotFoundException
 import io.ktor.server.plugins.autohead.AutoHeadResponse
 import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.plugins.statuspages.StatusPagesConfig
 import io.ktor.server.resources.Resources
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
@@ -32,15 +33,7 @@ fun Application.configureRouting(jdbi: Jdbi, eventsResource: EventsResource) {
   install(Webjars) {
     path = "/webjars" // defaults to /webjars
   }
-  install(StatusPages) {
-    exception<Throwable> { call, cause ->
-      when (cause) {
-        is NotFoundException -> call.respondText(text = "$cause", status = NotFound)
-        is MissingFieldException -> call.respondText(text = "$cause", status = BadRequest)
-        else -> call.respondText(text = "500: $cause", status = InternalServerError)
-      }
-    }
-  }
+  install(StatusPages) { statusPagesConfig() }
   install(Resources)
   install(AutoHeadResponse)
 
@@ -66,5 +59,16 @@ fun Application.configureRouting(jdbi: Jdbi, eventsResource: EventsResource) {
 
     // REST API
     route("/api/v1") { eventsRoute(eventsResource) }
+  }
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+fun StatusPagesConfig.statusPagesConfig() {
+  exception<Throwable> { call, cause ->
+    when (cause) {
+      is NotFoundException -> call.respondText(text = "$cause", status = NotFound)
+      is MissingFieldException -> call.respondText(text = "$cause", status = BadRequest)
+      else -> call.respondText(text = "500: $cause", status = InternalServerError)
+    }
   }
 }

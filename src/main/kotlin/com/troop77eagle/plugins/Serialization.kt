@@ -7,5 +7,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import kotlinx.serialization.json.Json
 
 fun Application.configureSerialization() {
-  install(ContentNegotiation) { json(Json { prettyPrint = true }) }
+  install(ContentNegotiation) { json(jsonConfig()) }
 }
+
+fun jsonConfig(): Json = Json { prettyPrint = true }

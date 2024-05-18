@@ -1,7 +1,8 @@
 package com.troop77eagle.events
 
 import com.troop77eagle.getEventsResource
-import com.troop77eagle.plugins.configureRouting
+import com.troop77eagle.plugins.jsonConfig
+import com.troop77eagle.plugins.statusPagesConfig
 import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.call.body
@@ -16,24 +17,36 @@ import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.application.install
+import io.ktor.server.config.MapApplicationConfig
+import io.ktor.server.config.mergeWith
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation as ServerContentNegotiation
+import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.routing.route
 import io.ktor.server.testing.testApplication
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.toInstant
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.ExperimentalSerializationApi
 
 class EventsAPITest : AnnotationSpec() {
   private val jdbi = CockroachDbContainer.jdbi
 
+  private fun testConfig() =
+      MapApplicationConfig(
+          "db.host" to CockroachDbContainer.dbContainer.host,
+          "db.port" to CockroachDbContainer.dbContainer.firstMappedPort.toString(),
+          "db.username" to CockroachDbContainer.dbContainer.username,
+          "db.password" to CockroachDbContainer.dbContainer.password,
+          "db.liquibase.username" to CockroachDbContainer.dbContainer.password,
+          "db.liquibase.password" to CockroachDbContainer.dbContainer.password,
+      )
+
   @Test
   fun `event can be fetched after it is created`() = testApplication {
-    application {
-      configureRouting(jdbi, getEventsResource(jdbi))
-      install(ServerContentNegotiation) { json(Json { prettyPrint = true }) }
-    }
-    val client = createClient { install(ClientContentNegotiation) { json() } }
+    environment { config = config.mergeWith(testConfig()) }
+    install(ServerContentNegotiation) { json(jsonConfig()) }
+    routing { route("/api/v1") { eventsRoute(getEventsResource(jdbi)) } }
+    val client = createClient { install(ClientContentNegotiation) { json(jsonConfig()) } }
 
     client
         .put("/api/v1/events") {
@@ -87,13 +100,14 @@ class EventsAPITest : AnnotationSpec() {
         }
   }
 
+  @ExperimentalSerializationApi
   @Test
   fun `attempt to create incomplete event returns 400 Bad Request`() = testApplication {
-    application {
-      configureRouting(jdbi, getEventsResource(jdbi))
-      install(ServerContentNegotiation) { json(Json { prettyPrint = true }) }
-    }
-    val client = createClient { install(ClientContentNegotiation) { json() } }
+    environment { config = config.mergeWith(testConfig()) }
+    install(ServerContentNegotiation) { json(jsonConfig()) }
+    install(StatusPages) { statusPagesConfig() }
+    routing { route("/api/v1") { eventsRoute(getEventsResource(jdbi)) } }
+    val client = createClient { install(ClientContentNegotiation) { json(jsonConfig()) } }
 
     client
         .put("/api/v1/events") {
@@ -106,11 +120,10 @@ class EventsAPITest : AnnotationSpec() {
 
   @Test
   fun `fetching non-existent event returns 404 Not Found`() = testApplication {
-    application {
-      configureRouting(jdbi, getEventsResource(jdbi))
-      install(ServerContentNegotiation) { json(Json { prettyPrint = true }) }
-    }
-    val client = createClient { install(ClientContentNegotiation) { json() } }
+    environment { config = config.mergeWith(testConfig()) }
+    install(ServerContentNegotiation) { json(jsonConfig()) }
+    routing { route("/api/v1") { eventsRoute(getEventsResource(jdbi)) } }
+    val client = createClient { install(ClientContentNegotiation) { json(jsonConfig()) } }
 
     client.get("/api/v1/events/404") { accept(Application.Json) }.apply { status shouldBe NotFound }
   }
