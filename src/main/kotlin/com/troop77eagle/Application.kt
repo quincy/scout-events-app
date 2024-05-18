@@ -39,6 +39,7 @@ fun createDatasource(dbConfig: ApplicationConfig): DataSource =
       applicationName = dbConfig.property("app").getString()
       serverNames = arrayOf(dbConfig.property("host").getString())
       portNumbers = intArrayOf(dbConfig.property("port").getString().toInt())
+      sslRootCert = dbConfig.property("sslRootCert").getString()
       databaseName = dbConfig.property("database").getString()
       user = dbConfig.property("username").getString()
       password = dbConfig.property("password").getString()

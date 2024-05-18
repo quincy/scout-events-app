@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: cert
-        run: curl --create-dirs -o .postgresql/root.crt 'https://cockroachlabs.cloud/clusters/0de3351e-57c1-4910-836d-5504d3dae7fc/cert'
+        run: curl --create-dirs -o root.crt 'https://cockroachlabs.cloud/clusters/0de3351e-57c1-4910-836d-5504d3dae7fc/cert'
 
       - uses: liquibase-github-actions/update@v4.27.0
         with:

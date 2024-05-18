@@ -9,6 +9,7 @@ db:
   app: "scout-events"
   host: "$DB_HOST:localhost"
   port: "$DB_PORT:26257"
+  sslRootCert: "$DB_SSL_ROOT_CERT:$HOME/.postgresql/root.crt"
   database: "$DB_DATABASE:scouting"
   username: "$DB_USERNAME:"
   password: "$DB_PASSWORD:"
