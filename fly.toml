@@ -20,7 +20,7 @@ primary_region = 'sea'
 [env]
   LOG_LEVEL = "info"
   DB_DATABASE = "scouting"
-  DB_SSL_ROOT_CERT = "$HOME/root.crt"
+  DB_SSL_ROOT_CERT = "/app/root.crt"
 
 [[vm]]
   size = 'shared-cpu-1x'
