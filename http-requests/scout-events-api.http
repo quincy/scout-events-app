@@ -14,4 +14,6 @@ Accept: application/json
   "pickupLocation": "Eagle Hills Church"
 }
 
-###
+### Fetch an event by its id
+GET https://troop77-events.fly.dev/api/v1/events/1
+Accept: application/json
