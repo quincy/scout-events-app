@@ -20,11 +20,13 @@ import io.ktor.server.sessions.set
 fun Application.configureSecurity() {
   data class MySession(val count: Int = 0)
   install(Sessions) { cookie<MySession>("MY_SESSION") { cookie.extensions["SameSite"] = "lax" } }
+
   // Please read the jwt property from the config file if you are using EngineMain
   val jwtAudience = "jwt-audience"
   val jwtDomain = "https://jwt-provider-domain/"
   val jwtRealm = "ktor sample app"
   val jwtSecret = "secret"
+
   authentication {
     jwt {
       realm = jwtRealm
@@ -39,6 +41,7 @@ fun Application.configureSecurity() {
       }
     }
   }
+
   routing {
     get("/session/increment") {
       val session = call.sessions.get<MySession>() ?: MySession()

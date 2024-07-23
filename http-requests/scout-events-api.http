@@ -1,5 +1,5 @@
 ### Create an event
-PUT https://troop77-events.fly.dev/api/v1/events
+PUT http://localhost:8080/api/v1/events
 Content-Type: application/json
 Accept: application/json
 
@@ -15,5 +15,5 @@ Accept: application/json
 }
 
 ### Fetch an event by its id
-GET https://troop77-events.fly.dev/api/v1/events/1
+GET http://localhost:8080/api/v1/events/1
 Accept: application/json

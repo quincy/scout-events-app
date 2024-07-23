@@ -1,41 +1,47 @@
 # scout-events-app
 
-
 ## Dev Setup
 
 ### SDKs
+
 This project uses [SDKMAN!](https://sdkman.io/) to manage things like the Gradle version.
 See the [.sdkmanrc](.sdkmanrc) file to see which versions of the tools it will install.
 
 To get started with SDKMAN!, visit https://sdkman.io/install and follow the installation instructions.
 
 You can install by running this command on Unix-like operating systems:
+
 ```shell
 curl -s "https://get.sdkman.io" | bash
 ```
 
 You can install the tools listed in the [.sdkmanrc](.sdkmanrc) file with:
+
 ```shell
 sdk env install
 ```
 
 You can activate these tools by with:
+
 ```shell
 sdk env
 ```
 
 Or you can set the following configuration in your `~/.sdkman/etc/config` file:
+
 ```text
 sdkman_auto_env=true
 ```
 
 ### Docker
-If you want to run the app locally in a docker container, you'll need docker.  Follow the instructions
+
+If you want to run the app locally in a docker container, you'll need docker. Follow the instructions
 at [docker.com](https://docs.docker.com/get-docker/).
 
-
 ## Build
+
 If you're using Intellij, there are Run Configurations available in the repository:
+
 - [pre-commit build](.idea/runConfigurations/pre_commit_build.xml)
   - run before committing
   - ```shell
@@ -48,7 +54,9 @@ If you're using Intellij, there are Run Configurations available in the reposito
     ```
 
 ## Running the app locally
+
 You'll need to first create the docker-compose environment, which will start a local version of the database:
+
 ```shell
 docker-compose up
 ```
@@ -56,6 +64,7 @@ docker-compose up
 Use the [run app](.idea/runConfigurations/run_app.xml) Run Configuration in IntelliJ.
 
 If you want to run the docker container you built above:
+
 ```shell
 docker run --cpus=1 --memory=200m -p 8080:8080 scout-events-app
 ```
@@ -63,16 +72,19 @@ docker run --cpus=1 --memory=200m -p 8080:8080 scout-events-app
 ### Running liquibase
 
 Check the status
+
 ```shell
 ~/.sdkman/candidates/liquibase/current/bin/liquibase status --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting
 ```
+
 Check what SQL will be run
+
 ```shell
 ~/.sdkman/candidates/liquibase/current/bin/liquibase update-sql --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting
 ```
+
 Run the liquibase migration
+
 ```shell
 ~/.sdkman/candidates/liquibase/current/bin/liquibase update --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting
 ```
-
-

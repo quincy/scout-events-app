@@ -1,6 +1,7 @@
 package com.troop77eagle.events
 
 import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.shouldBe
 import io.mockk.every
@@ -86,5 +87,42 @@ class EventsServiceTest : AnnotationSpec() {
     val event = EventsService.create(eventsDAO).getById(404L)
 
     event shouldBe null
+  }
+
+  @Test
+  fun `fetch all events`() {
+    val eventsDAO =
+        mockk<EventsDAO> {
+          every { getAll() } returns
+              listOf(
+                  Event(
+                      id = 1L,
+                      name = "event1",
+                      startTime = Instant.parse("1111-11-11T01:11-01:00"),
+                      endTime = Instant.parse("1111-11-11T11:11-01:00"),
+                      summary = "summary1",
+                      description = "description1",
+                      eventLocation = "location1",
+                      assemblyLocation = "assemblyLocation1",
+                      pickupLocation = "pickupLocation1",
+                  ),
+                  Event(
+                      id = 2L,
+                      name = "event2",
+                      startTime = Instant.parse("2222-02-22T02:22-02:00"),
+                      endTime = Instant.parse("2222-02-22T22:22-02:00"),
+                      summary = "summary2",
+                      description = "description2",
+                      eventLocation = "location2",
+                      assemblyLocation = "assemblyLocation2",
+                      pickupLocation = "pickupLocation2",
+                  ),
+              )
+        }
+
+    val events = EventsService.create(eventsDAO).getAll()
+
+    events shouldHaveSize 2
+    verify { eventsDAO.getAll() }
   }
 }

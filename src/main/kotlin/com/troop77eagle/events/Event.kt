@@ -1,6 +1,10 @@
 package com.troop77eagle.events
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.format
+import kotlinx.datetime.format.DateTimeComponents
+import kotlinx.datetime.format.Padding
+import kotlinx.datetime.format.char
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,7 +18,20 @@ data class Event(
     val eventLocation: String,
     val assemblyLocation: String? = null,
     val pickupLocation: String? = null,
-)
+) {
+  val startDate: String by lazy { startTime.asISODate() }
+  val endDate: String by lazy { endTime.asISODate() }
+}
+
+fun Instant.asISODate(): String =
+    this.format(
+        DateTimeComponents.Format {
+          year()
+          char('-')
+          monthNumber(Padding.ZERO)
+          char('-')
+          dayOfMonth()
+        })
 
 @Serializable
 data class CreateEventRequest(

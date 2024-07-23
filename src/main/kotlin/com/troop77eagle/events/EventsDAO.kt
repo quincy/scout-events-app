@@ -15,6 +15,11 @@ interface EventsDAO {
 
   @SqlQuery("""select * from scouting.public.events where id = :id""") fun getById(id: Long): Event?
 
+  @SqlQuery(
+      """select * from scouting.public.events 
+               order by scouting.public.events.start_time asc""")
+  fun getAll(): List<Event>
+
   @SqlUpdate(
       """insert into scouting.public.events
            (name,

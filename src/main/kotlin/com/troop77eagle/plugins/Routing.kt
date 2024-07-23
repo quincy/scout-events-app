@@ -4,7 +4,6 @@ import com.troop77eagle.checks.BasicHealthcheck
 import com.troop77eagle.checks.DeepHealthcheck
 import com.troop77eagle.events.EventsResource
 import com.troop77eagle.events.eventsRoute
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.InternalServerError
@@ -17,7 +16,6 @@ import io.ktor.server.plugins.NotFoundException
 import io.ktor.server.plugins.autohead.AutoHeadResponse
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.plugins.statuspages.StatusPagesConfig
-import io.ktor.server.resources.Resources
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
@@ -30,18 +28,16 @@ import org.jdbi.v3.core.Jdbi
 
 @OptIn(ExperimentalSerializationApi::class)
 fun Application.configureRouting(jdbi: Jdbi, eventsResource: EventsResource) {
-  install(Webjars) {
-    path = "/webjars" // defaults to /webjars
-  }
+  install(Webjars)
   install(StatusPages) { statusPagesConfig() }
-  install(Resources)
+  //  install(Resources)
   install(AutoHeadResponse)
 
   val basicHealthcheck = BasicHealthcheck()
   val deepHealthcheck = DeepHealthcheck(jdbi)
 
   routing {
-    get("/") { call.respondText("Hello World!") }
+    //    get("/") { call.respondText("Hello World!") }
     get("/healthcheck") {
       basicHealthcheck.check().apply {
         call.respond(HttpStatusCode.fromValue(this.status), this.body)
@@ -51,11 +47,12 @@ fun Application.configureRouting(jdbi: Jdbi, eventsResource: EventsResource) {
       deepHealthcheck.check().apply { call.respond(HttpStatusCode.fromValue(status), body) }
     }
 
-    get("/webjars") {
-      call.respondText("<script src='/webjars/jquery/jquery.js'></script>", ContentType.Text.Html)
-    }
+    //    get("/webjars") {
+    //      call.respondText("<script src='/webjars/jquery/jquery.js'></script>",
+    // ContentType.Text.Html)
+    //    }
     // Static plugin. Try to access `/static/index.html`
-    staticResources(remotePath = "/static", basePackage = "static")
+    staticResources(remotePath = "/", basePackage = "static")
 
     // REST API
     route("/api/v1") { eventsRoute(eventsResource) }

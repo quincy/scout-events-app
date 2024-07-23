@@ -1,7 +1,6 @@
-version: '3.5'
+version: "3.5"
 
 services:
-
   scout-events-db:
     image: cockroachdb/cockroach:v23.1.17
     ports:

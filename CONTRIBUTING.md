@@ -1,7 +1,9 @@
 # Contributing
+
 To contribute to this project you must agree to the Developer Certificate of Authority.
 
 ## Developer Certificate of Origin
+
     Developer Certificate of Origin
     Version 1.1
 
@@ -38,7 +40,7 @@ To contribute to this project you must agree to the Developer Certificate of Aut
     this project or the open source license(s) involved.
 
 Contributors indicate that they adhere to these requirements by adding
-a `Signed-off-by` line to their commit messages.  For example:
+a `Signed-off-by` line to their commit messages. For example:
 
     This is my commit message
 

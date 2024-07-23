@@ -11,5 +11,18 @@
 
   <body>
     <h1>Troop 77</h1>
+
+    <div
+      id="event-list"
+      hx-get="/api/v1/events"
+      hx-trigger="load"
+      hx-target="#events-table"
+    >
+      <table id="events-table" data-testid="events-table">
+        <thead>
+          Upcoming Events
+        </thead>
+      </table>
+    </div>
   </body>
 </html>

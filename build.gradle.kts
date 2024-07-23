@@ -22,9 +22,12 @@ application {
   applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
-repositories { mavenCentral() }
+repositories {
+  mavenCentral()
+  maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
+}
 
-val testcontainersVersion = "1.19.7"
+val testcontainersVersion = "1.19.8"
 
 dependencies {
   // ktor
@@ -46,11 +49,14 @@ dependencies {
   implementation("io.ktor:ktor-server-sessions-jvm")
   implementation("io.ktor:ktor-server-status-pages-jvm")
   implementation("io.ktor:ktor-server-webjars-jvm")
-  implementation("org.webjars:jquery:3.7.1")
 
   // logging
   implementation("ch.qos.logback:logback-classic:$logbackVersion")
   implementation("io.github.oshai:kotlin-logging-jvm:6.0.3")
+
+  // webjars
+  implementation("org.webjars.npm:htmx.org:1.9.12")
+  implementation("org.webjars:jquery:3.7.1")
 
   // database
   implementation("org.postgresql:postgresql:42.7.3")
@@ -58,11 +64,13 @@ dependencies {
   implementation(platform("org.jdbi:jdbi3-bom:3.45.1"))
   implementation("org.jdbi:jdbi3-core")
   implementation("org.jdbi:jdbi3-kotlin")
-  //  implementation("org.jdbi:jdbi3-sqlobject")
   implementation("org.jdbi:jdbi3-kotlin-sqlobject")
 
   // datetime
   implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
+
+  // templating
+  implementation("com.github.spullara.mustache.java:compiler:0.9.10")
 
   // test
   testImplementation("io.ktor:ktor-server-tests-jvm")
@@ -71,6 +79,7 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-params")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
   testImplementation("io.mockk:mockk:1.13.10")
+  testImplementation("com.natpryce:hamkrest:1.8.0.1")
 
   // testcontainers
   testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
@@ -86,7 +95,20 @@ spotless {
   kotlin { ktfmt() }
   kotlinGradle { ktfmt() }
 
-  format("misc") {
+  format("web") {
+    target(
+        "**/*.html",
+        "**/*.css",
+        "**/*.js",
+        "**/*.ts",
+        "**/*.md",
+        "**/*.json",
+        "**/*.yaml",
+        "**/*.yml")
+    prettier().config(mapOf("tabWidth" to 2))
+  }
+
+  format("build-scripts") {
     // define the files to apply `misc` to
     target("*.gradle", ".gitattributes", ".gitignore")
 
@@ -96,6 +118,8 @@ spotless {
     endWithNewline()
   }
 }
+
+detekt { config.setFrom("$projectDir/config/detekt/detekt.yml") }
 
 ktor {
   docker {

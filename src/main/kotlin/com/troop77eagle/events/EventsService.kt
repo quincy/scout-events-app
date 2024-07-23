@@ -1,9 +1,13 @@
 package com.troop77eagle.events
 
+import io.github.oshai.kotlinlogging.KotlinLogging
+
 interface EventsService {
   fun create(request: CreateEventRequest): Event
 
   fun getById(id: Long): Event?
+
+  fun getAll(): List<Event>
 
   companion object {
     fun create(eventsDAO: EventsDAO): EventsService {
@@ -12,6 +16,8 @@ interface EventsService {
   }
 }
 
+private val log = KotlinLogging.logger {}
+
 private class EventsServiceImpl(private val eventsDAO: EventsDAO) : EventsService {
   override fun create(request: CreateEventRequest): Event {
     return eventsDAO.create(request).let { request.toEvent(it) }
@@ -19,5 +25,14 @@ private class EventsServiceImpl(private val eventsDAO: EventsDAO) : EventsServic
 
   override fun getById(id: Long): Event? {
     return eventsDAO.getById(id)
+  }
+
+  override fun getAll(): List<Event> {
+    return try {
+      eventsDAO.getAll()
+    } catch (e: Exception) {
+      log.error(e) { "fuck" }
+      throw e;
+    }
   }
 }
