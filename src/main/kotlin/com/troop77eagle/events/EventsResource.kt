@@ -52,9 +52,9 @@ fun requestedContentType(request: ApplicationRequest): ContentType {
   } else {
     val acceptHeader = request.accept() ?: Application.Json.toString()
     acceptHeader
-      .split(Regex(","))
-      .first { it in allowedTypesForFetchAll }
-      .let { ContentType.parse(it) }
+        .split(Regex(","))
+        .first { it in allowedTypesForFetchAll }
+        .let { ContentType.parse(it) }
   }
 }
 

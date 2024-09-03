@@ -1,5 +1,7 @@
 package com.troop77eagle.events
 
+import com.ninja_squad.dbsetup.Operations.deleteAllFrom
+import com.ninja_squad.dbsetup.operation.Operation
 import com.troop77eagle.getJdbi
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -43,4 +45,6 @@ object CockroachDbContainer {
           }
 
   val jdbi = getJdbi(datasource)
+
+  val DELETE_ALL: Operation = deleteAllFrom("events")
 }

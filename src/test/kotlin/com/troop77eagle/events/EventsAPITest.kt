@@ -1,5 +1,8 @@
 package com.troop77eagle.events
 
+import com.ninja_squad.dbsetup.DbSetup
+import com.ninja_squad.dbsetup.Operations
+import com.ninja_squad.dbsetup.destination.DataSourceDestination
 import com.troop77eagle.events.EventMatchers.haveAssemblyLocation
 import com.troop77eagle.events.EventMatchers.haveDescription
 import com.troop77eagle.events.EventMatchers.haveEndTime
@@ -41,6 +44,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.toInstant
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
 
 class EventsAPITest : AnnotationSpec() {
   private val jdbi = CockroachDbContainer.jdbi
@@ -55,12 +59,25 @@ class EventsAPITest : AnnotationSpec() {
           "db.liquibase.password" to CockroachDbContainer.dbContainer.password,
       )
 
+  @BeforeEach
+  fun prepare() {
+    val operation = Operations.sequenceOf(CockroachDbContainer.DELETE_ALL)
+    val dbSetup = DbSetup(DataSourceDestination(CockroachDbContainer.datasource), operation)
+    dbSetup.launch()
+  }
+
+  @AfterClass
+  fun teardown() {
+    CockroachDbContainer.dbContainer.stop()
+  }
+
   @Test
   fun `event can be fetched after it is created`() = testApplication {
     environment { config = config.mergeWith(testConfig()) }
     install(ServerContentNegotiation) { json(jsonConfig()) }
     routing { route("/api/v1") { eventsRoute(getEventsResource(jdbi)) } }
     val client = createClient { install(ClientContentNegotiation) { json(jsonConfig()) } }
+    var id: Long
 
     client
         .put("/api/v1/events") {
@@ -76,10 +93,11 @@ class EventsAPITest : AnnotationSpec() {
                   eventLocation = "Vale, OR",
                   assemblyLocation = "Eagle Hills Church",
                   pickupLocation = "Eagle Hills Church",
-              ),
-          )
+              ))
         }
         .apply {
+          id = Json.decodeFromString<Event>(bodyAsText()).id
+
           status shouldBe HttpStatusCode.Created
           body<Event>() should haveName("Wagon Wheel Camporee")
           body<Event>() should
@@ -94,7 +112,7 @@ class EventsAPITest : AnnotationSpec() {
         }
 
     client
-        .get("/api/v1/events/1") { accept(Application.Json) }
+        .get("/api/v1/events/$id") { accept(Application.Json) }
         .apply {
           status shouldBe OK
           body<Event>() should haveName("Wagon Wheel Camporee")
@@ -254,7 +272,7 @@ class EventsAPITest : AnnotationSpec() {
         .get("/api/v1/events") { accept(Text.Html) }
         .apply {
           status shouldBe OK
-          bodyAsText() shouldBe
+          bodyAsText().trim() shouldBe
               """
               <thead>Upcoming Events</thead>
               <tr>

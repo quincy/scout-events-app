@@ -80,6 +80,7 @@ dependencies {
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
   testImplementation("io.mockk:mockk:1.13.10")
   testImplementation("com.natpryce:hamkrest:1.8.0.1")
+  testImplementation("com.ninja-squad:DbSetup-kotlin:2.1.0")
 
   // testcontainers
   testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
@@ -105,6 +106,7 @@ spotless {
         "**/*.json",
         "**/*.yaml",
         "**/*.yml")
+    targetExclude("cockroach-data")
     prettier().config(mapOf("tabWidth" to 2))
   }
 

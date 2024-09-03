@@ -1,6 +1,7 @@
 package com.troop77eagle.events
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.jdbi.v3.core.JdbiException
 
 interface EventsService {
   fun create(request: CreateEventRequest): Event
@@ -30,9 +31,9 @@ private class EventsServiceImpl(private val eventsDAO: EventsDAO) : EventsServic
   override fun getAll(): List<Event> {
     return try {
       eventsDAO.getAll()
-    } catch (e: Exception) {
-      log.error(e) { "fuck" }
-      throw e;
+    } catch (e: JdbiException) {
+      log.error(e) { "SQL query failed" }
+      throw e
     }
   }
 }

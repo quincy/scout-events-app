@@ -10,8 +10,8 @@ class EventTest {
       Event(
           id = 1L,
           name = "event1",
-          startTime = Instant.parse("1111-11-11T01:11-01:00"),
-          endTime = Instant.parse("2222-02-22T11:11-01:00"),
+          startTime = Instant.parse("1111-11-11T01:11-08:00"),
+          endTime = Instant.parse("2222-02-22T11:11-08:00"),
           summary = "summary1",
           description = "description1",
           eventLocation = "location1",

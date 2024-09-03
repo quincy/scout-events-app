@@ -1,10 +1,12 @@
 package com.troop77eagle.events
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
-import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -24,14 +26,15 @@ data class Event(
 }
 
 fun Instant.asISODate(): String =
-    this.format(
-        DateTimeComponents.Format {
-          year()
-          char('-')
-          monthNumber(Padding.ZERO)
-          char('-')
-          dayOfMonth()
-        })
+    this.toLocalDateTime(TimeZone.of("America/Boise"))
+        .format(
+            LocalDateTime.Format {
+              year()
+              char('-')
+              monthNumber(Padding.ZERO)
+              char('-')
+              dayOfMonth()
+            })
 
 @Serializable
 data class CreateEventRequest(
