@@ -12,13 +12,15 @@ class TemplatorTest {
         Templator.create().toHtmlTable(listOf()).trim(),
         equalTo(
             """
-            <thead>Upcoming Events</thead>
-            <tr>
-              <td>Date</td>
-              <td>Event</td>
-              <td>Summary</td>
-              <td>Location</td>
-            </tr>
+            <h2>Upcoming Events</h2>
+            <table id="events-table" data-testid="events-table">
+              <tr>
+                <td>Date</td>
+                <td>Event</td>
+                <td>Summary</td>
+                <td>Location</td>
+              </tr>
+            </table>
             """
                 .trimIndent()))
   }
@@ -55,25 +57,27 @@ class TemplatorTest {
         Templator.create().toHtmlTable(events).trim(),
         equalTo(
             """
-            <thead>Upcoming Events</thead>
-            <tr>
-              <td>Date</td>
-              <td>Event</td>
-              <td>Summary</td>
-              <td>Location</td>
-            </tr>
-            <tr>
-              <td>1111-11-11</td>
-              <td>event1</td>
-              <td>summary1</td>
-              <td>location1</td>
-            </tr>
-            <tr>
-              <td>2222-02-22</td>
-              <td>event2</td>
-              <td>summary2</td>
-              <td>location2</td>
-            </tr>
+            <h2>Upcoming Events</h2>
+            <table id="events-table" data-testid="events-table">
+              <tr>
+                <td>Date</td>
+                <td>Event</td>
+                <td>Summary</td>
+                <td>Location</td>
+              </tr>
+              <tr>
+                <td>1111-11-11</td>
+                <td>event1</td>
+                <td>summary1</td>
+                <td>location1</td>
+              </tr>
+              <tr>
+                <td>2222-02-22</td>
+                <td>event2</td>
+                <td>summary2</td>
+                <td>location2</td>
+              </tr>
+            </table>
             """
                 .trimIndent()))
   }

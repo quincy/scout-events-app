@@ -1,2 +1,5 @@
+CREATE USER IF NOT EXISTS liquibase;
+GRANT ALL ON DATABASE scouting TO liquibase;
+
 CREATE USER IF NOT EXISTS app;
 GRANT ALL ON DATABASE scouting TO app;

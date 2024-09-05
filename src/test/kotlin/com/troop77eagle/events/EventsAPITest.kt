@@ -274,25 +274,27 @@ class EventsAPITest : AnnotationSpec() {
           status shouldBe OK
           bodyAsText().trim() shouldBe
               """
-              <thead>Upcoming Events</thead>
-              <tr>
-                <td>Date</td>
-                <td>Event</td>
-                <td>Summary</td>
-                <td>Location</td>
-              </tr>
-              <tr>
-                <td>2024-04-12</td>
-                <td>Wagon Wheel Camporee</td>
-                <td>First annual Wagon Wheel Camporee</td>
-                <td>Vale, OR</td>
-              </tr>
-              <tr>
-                <td>2024-06-10</td>
-                <td>City of Rocks Campout</td>
-                <td>Rock climbing campout</td>
-                <td>City of Rocks National Monument</td>
-              </tr>
+              <h2>Upcoming Events</h2>
+              <table id="events-table" data-testid="events-table">
+                <tr>
+                  <td>Date</td>
+                  <td>Event</td>
+                  <td>Summary</td>
+                  <td>Location</td>
+                </tr>
+                <tr>
+                  <td>2024-04-12</td>
+                  <td>Wagon Wheel Camporee</td>
+                  <td>First annual Wagon Wheel Camporee</td>
+                  <td>Vale, OR</td>
+                </tr>
+                <tr>
+                  <td>2024-06-10</td>
+                  <td>City of Rocks Campout</td>
+                  <td>Rock climbing campout</td>
+                  <td>City of Rocks National Monument</td>
+                </tr>
+              </table>
               """
                   .trimIndent()
         }

@@ -3,26 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="../mvp.css" />
 
     <script src="/webjars/htmx.org/1.9.12/dist/htmx.min.js"></script>
+    <script>
+      htmx.logAll();
+    </script>
 
     <title>Scout Events</title>
   </head>
 
   <body>
-    <h1>Troop 77</h1>
+    <header>
+      <h1>Troop 77</h1>
+    </header>
 
-    <div
-      id="event-list"
-      hx-get="/api/v1/events"
-      hx-trigger="load"
-      hx-target="#events-table"
-    >
-      <table id="events-table" data-testid="events-table">
-        <thead>
-          Upcoming Events
-        </thead>
-      </table>
-    </div>
+    <main>
+      <div id="event-list" hx-get="/api/v1/events" hx-trigger="load"></div>
+    </main>
   </body>
 </html>
