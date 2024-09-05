@@ -106,7 +106,7 @@ spotless {
         "**/*.json",
         "**/*.yaml",
         "**/*.yml")
-    targetExclude("cockroach-data")
+    targetExclude(".idea/**", ".gradle/**", "build/**")
     prettier().config(mapOf("tabWidth" to 2))
   }
 
