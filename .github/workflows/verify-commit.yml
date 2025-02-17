@@ -12,16 +12,29 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          java-version: "17"
-          distribution: "temurin"
-
-      # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
-      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-
-      - name: Build with Gradle Wrapper
-        run: ./gradlew spotlessCheck detekt build check
+          go-version-file: 'src/go.mod'
+          cache-dependency-path: src/go.sum
+      - name: Install dependencies
+        run: |
+          cd src
+          go get .
+      - name: Build
+        run: |
+          cd src
+          go build -v ./...
+      - name: Install playwright drivers
+        run: |
+          cd src
+          go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+      - name: Start containers
+        run: |
+          docker compose up -d
+          sleep 10
+      - name: Run Tests
+        run: |
+          cd src
+          go run main.go &
+          go test -v ./...

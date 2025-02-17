@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scout Events</title>
+
+  <script src="static/js/htmx.min.js"></script>
+</head>
+<body>
+<h1>Troop 77</h1>
+
+<main>
+
+  <h2>Upcoming Events</h2>
+    {{if .}}
+      <table id="events-table" data-testid="events-table">
+        <tr>
+          <td>Date</td>
+          <td>Event</td>
+          <td>Summary</td>
+          <td>Location</td>
+        </tr>
+          {{range .}}
+              {{- /*gotype: github.com/quincy/scout-events-app/src/events.Event*/ -}}
+              <tr hx-get="/events/{{.Id}}" hx-target="body" hx-swap="innerHTML" hx-push-url="true">
+                <td>{{.StartTime.Format "2006-01-02 15:04" }}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Summary}}</td>
+                <td>{{.EventLocation}}</td>
+              </tr>
+          {{end}}
+      </table>
+    {{else}}
+      <h3>No upcoming events</h3>
+    {{end}}
+
+</main>
+
+</body>
+</html>

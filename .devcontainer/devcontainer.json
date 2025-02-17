@@ -9,7 +9,6 @@
   // Use 'settings' to set *default* container specific settings.json values on container create.
   // You can edit these settings after create using File > Preferences > Settings > Remote.
   "settings": {
-    "java.home": "/opt/java/openjdk",
     "terminal.integrated.shell.linux": "/bin/bash"
   },
 
@@ -22,5 +21,5 @@
   //	"echo source ${SDKMAN_DIR}/bin/sdkman-init.sh >> /home/vscode/.profile"
   // ],
 
-  "extensions": ["vscjava.vscode-java-pack", "redhat.vscode-xml", "fwcd.kotlin"]
+  "extensions": ["vscjava.vscode-java-pack", "redhat.vscode-xml"]
 }
