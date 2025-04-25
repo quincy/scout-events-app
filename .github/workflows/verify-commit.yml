@@ -36,5 +36,5 @@ jobs:
       - name: Run Tests
         run: |
           cd src
-          go run main.go &
+          DB_HOSTNAME=localhost DB_NAME=scouting DB_PASSWORD=admin DB_PORT=26257 DB_USERNAME=admin go run main.go &
           go test -v ./...

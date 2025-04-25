@@ -8,6 +8,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v5"
 	"log"
+	"os"
+	"strconv"
 )
 
 type PgxClient interface {
@@ -43,4 +45,42 @@ func CreateDbConnection(ctx context.Context, config *DbConfig) (PgxClient, error
 	}
 
 	return conn, err
+}
+
+func MakeDatabaseConfig() (*DbConfig, error) {
+	dbUsername, ok := os.LookupEnv("DB_USERNAME")
+	if !ok {
+		dbUsername = "admin"
+	}
+	dbPassword, ok := os.LookupEnv("DB_PASSWORD")
+	if !ok {
+		dbPassword = "admin"
+	}
+	dbHostname, ok := os.LookupEnv("DB_HOSTNAME")
+	if !ok {
+		dbHostname = "localhost"
+	}
+	var dbPort int
+	dbPortStr, ok := os.LookupEnv("DB_PORT")
+	if !ok {
+		dbPort = 26257
+	} else {
+		var err error
+		dbPort, err = strconv.Atoi(dbPortStr)
+		if err != nil {
+			return nil, err
+		}
+	}
+	dbName, ok := os.LookupEnv("DB_NAME")
+	if !ok {
+		dbName = "scouting"
+	}
+
+	return &DbConfig{
+		Username: dbUsername,
+		Password: dbPassword,
+		Hostname: dbHostname,
+		Port:     dbPort,
+		Dbname:   dbName,
+	}, nil
 }

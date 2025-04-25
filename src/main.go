@@ -14,18 +14,14 @@ import (
 func main() {
 	ctx := context.Background()
 
-	conn, err := database.CreateDbConnection(
-		ctx,
-		&database.DbConfig{
-			Username: "admin",
-			Password: "admin",
-			Hostname: "localhost",
-			Port:     26257,
-			Dbname:   "scouting",
-		})
+	dbConfig, err := database.MakeDatabaseConfig()
+	if err != nil {
+		log.Fatalf("Could not create database config: %v", err)
+	}
+	conn, err := database.CreateDbConnection(ctx, dbConfig)
 	defer conn.Close()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Could not connect to database: %v", err)
 	}
 
 	r := mux.NewRouter()
@@ -35,7 +31,6 @@ func main() {
 	err = http.ListenAndServe(":8080", r)
 	if err != nil {
 		log.Fatalf("Unhandled error: %s", err)
-		return
 	}
 }
 
