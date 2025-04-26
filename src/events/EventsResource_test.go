@@ -1,8 +1,8 @@
-package main
+package events
 
 import (
 	"github.com/pashagolub/pgxmock/v4"
-	"github.com/quincy/scout-events-app/events"
+	"github.com/quincy/scout-events-app/src/templates"
 	"net/http/httptest"
 	"strings"
 	"testing"
@@ -21,12 +21,12 @@ func Test_CanRenderEventsList(t *testing.T) {
 			AddRow("1", "Troop Meeting1", startTime(-6), endTime(-6), "summary", "description", "event_location", "assembly_location", "pickup_location").
 			AddRow("2", "Troop Meeting2", startTime(4), endTime(4), "summary", "description", "event_location", "assembly_location", "pickup_location"))
 
-	dao := events.NewEventDao(db)
-	rootResource := newRootResource(dao)
+	dao := NewEventDao(db)
+	rootResource := NewEventsResource(dao, templates.New())
 
 	response := httptest.NewRecorder()
 
-	rootResource.Home(response, httptest.NewRequest("GET", "/events/1", nil))
+	rootResource.EventsListPage(response, httptest.NewRequest("GET", "/events/1", nil))
 
 	if response.Code != 200 {
 		t.Errorf("Expected status code 200, got %d", response.Code)

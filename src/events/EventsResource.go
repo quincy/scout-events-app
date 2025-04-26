@@ -2,22 +2,43 @@ package events
 
 import (
 	"github.com/gorilla/mux"
-	"html/template"
+	"github.com/quincy/scout-events-app/src/templates"
 	"log"
 	"net/http"
 )
 
 type Resource interface {
+	EventsListPage(w http.ResponseWriter, r *http.Request)
 	EventDetailsPage(w http.ResponseWriter, r *http.Request)
-	UpcomingEvents(w http.ResponseWriter, r *http.Request)
 }
 
 type resource struct {
-	eventDao EventDao
+	eventDao  EventDao
+	templates templates.Templates
 }
 
-func NewEventsResource(db EventDao) Resource {
-	return &resource{db}
+func NewEventsResource(db EventDao, templates templates.Templates) Resource {
+	return &resource{eventDao: db, templates: templates}
+}
+
+func (res *resource) EventsListPage(w http.ResponseWriter, r *http.Request) {
+	upcomingEvents, err := res.eventDao.GetUpcomingEvents(r.Context())
+	if err != nil {
+		log.Printf("Error getting upcoming events: %v", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+	}
+
+	t, err := res.templates.GetEventListTemplate()
+	if err != nil {
+		log.Printf("parsing template failed. err=%s", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+	}
+
+	err = t.Execute(w, upcomingEvents)
+	if err != nil {
+		log.Printf("executing template failed. err=%s", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+	}
 }
 
 func (res *resource) EventDetailsPage(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +50,7 @@ func (res *resource) EventDetailsPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
 
-	t, err := template.New("event-details.gohtml").ParseFiles("./templates/event-details.gohtml")
+	t, err := res.templates.GetEventDetailsTemplate()
 	if err != nil {
 		log.Printf("parsing template failed. err=%s", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -40,38 +61,4 @@ func (res *resource) EventDetailsPage(w http.ResponseWriter, r *http.Request) {
 		log.Printf("executing template failed. err=%s", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
-}
-
-func (res *resource) UpcomingEvents(w http.ResponseWriter, r *http.Request) {
-	_, err := loadEventListTemplate()
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		log.Printf("parsing template failed. err=%s", err)
-	}
-
-}
-
-func loadEventListTemplate() (*template.Template, error) {
-	return template.New("eventList").Parse(`
-	    {{if .}}
-	      <table id="events-table" data-testid="events-table">
-	        <tr>
-	          <td>Date</td>
-	          <td>Event</td>
-	          <td>Summary</td>
-	          <td>Location</td>
-	        </tr>
-	        {{range .}}
-	        {{- /*gotype: github.com/quincy/scout-events-app/src/events.Event*/ -}}
-	        <tr>
-	          <td>{{.StartTime.Format "2006-01-02 15:04" }}</td>
-	          <td>{{.Name}}</td>
-	          <td>{{.Summary}}</td>
-	          <td>{{.EventLocation}}</td>
-	        </tr>
-	        {{end}}
-	      </table>
-	    {{else}}
-	      <h3>No upcoming events</h3>
-	    {{end}}`)
 }

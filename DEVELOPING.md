@@ -83,17 +83,17 @@ environment.  But you can run it manually as well.
 Check the status:
 
 ```shell
-liquibase status --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting --changelog-file=db/changelog/changelog-root.yaml
+liquibase status --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting --changelog-file=liquibase/changelog/changelog-root.yaml
 ```
 
 Check what SQL will be run:
 
 ```shell
-liquibase update-sql --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting --changelog-file=db/changelog/changelog-root.yaml
+liquibase update-sql --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting --changelog-file=liquibase/changelog/changelog-root.yaml
 ```
 
 Run the liquibase migration:
 
 ```shell
-liquibase update --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting --changelog-file=db/changelog/changelog-root.yaml
+liquibase update --username=liquibase --url=jdbc:postgresql://localhost:26257/scouting --changelog-file=liquibase/changelog/changelog-root.yaml
 ```

@@ -12,29 +12,29 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: 'src/go.mod'
-          cache-dependency-path: src/go.sum
+          go-version-file: 'go.mod'
+          cache-dependency-path: go.sum
+
       - name: Install dependencies
-        run: |
-          cd src
-          go get .
+        run: go get .
+
       - name: Build
-        run: |
-          cd src
-          go build -v ./...
+        run: go build -v ./...
+
       - name: Install playwright drivers
-        run: |
-          cd src
-          go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+        run: go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps
+
       - name: Start containers
         run: |
           docker compose up -d
           sleep 10
+
+      - name: Run application
+        run: DB_HOSTNAME=localhost DB_NAME=scouting DB_PASSWORD=admin DB_PORT=26257 DB_USERNAME=admin go run main.go &
+
       - name: Run Tests
-        run: |
-          cd src
-          DB_HOSTNAME=localhost DB_NAME=scouting DB_PASSWORD=admin DB_PORT=26257 DB_USERNAME=admin go run main.go &
-          go test -v ./...
+        run: go test -v ./...

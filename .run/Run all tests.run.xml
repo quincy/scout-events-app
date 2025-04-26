@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run all tests" type="GoTestRunConfiguration" factoryName="Go Test">
     <module name="scout-events-app" />
-    <working_directory value="$PROJECT_DIR$/src" />
+    <working_directory value="$PROJECT_DIR$" />
     <kind value="DIRECTORY" />
     <package value="github.com/quincy/scout-events-app" />
-    <directory value="$PROJECT_DIR$/src" />
+    <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$" />
     <framework value="gotest" />
     <method v="2" />

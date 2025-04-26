@@ -28,7 +28,7 @@ jobs:
           url: ${{ secrets.LIQUIBASE_URL }}
           username: ${{ secrets.LIQUIBASE_USERNAME }}
           password: ${{ secrets.LIQUIBASE_PASSWORD }}
-          changelogFile: db/changelog/changelog-root.yaml
+          changelogFile: liquibase/changelog/changelog-root.yaml
           rollbackOnError: true
           showSummary: verbose
 
