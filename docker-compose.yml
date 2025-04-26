@@ -9,7 +9,7 @@ services:
       - "8081:8080"
     command: start-single-node --insecure
     volumes:
-      - ${PWD}/db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ${PWD}/liquibase/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     environment:
       - COCKROACH_DATABASE=scouting
       - COCKROACH_USER=liquibase
@@ -27,8 +27,8 @@ services:
       scout-events-db:
         condition: service_healthy
     volumes:
-      - ${PWD}/db/changelog:/liquibase/changelog
-      - ${PWD}/db/properties:/liquibase/properties
+      - ${PWD}/liquibase/changelog:/liquibase/changelog
+      - ${PWD}/liquibase/properties:/liquibase/properties
     entrypoint: liquibase --logLevel=debug update --defaultsFile=/liquibase/properties/liquibase.properties
 
 networks:
