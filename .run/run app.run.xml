@@ -2,14 +2,8 @@
   <configuration default="false" name="run app" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="scout-events-app" />
     <working_directory value="$PROJECT_DIR$" />
-    <envs>
-      <env name="DB_HOSTNAME" value="localhost" />
-      <env name="DB_NAME" value="scouting" />
-      <env name="DB_PASSWORD" value="admin" />
-      <env name="DB_PORT" value="26257" />
-      <env name="DB_USERNAME" value="admin" />
-    </envs>
     <kind value="FILE" />
+    <package value="github.com/quincy/scout-events-app" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$/main.go" />
     <method v="2" />

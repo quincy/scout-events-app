@@ -70,7 +70,8 @@ If you want to run the docker container you built above:
 docker run \
   --cpus=1 --memory=512m \
   -p 8080:8080 \
-  -e DB_USERNAME='app' \
+  -e DB_HOSTNAME=scout-events-db \
+  --network=scout-events-app_scout-events-net \
   scout-events-app
 ```
 
