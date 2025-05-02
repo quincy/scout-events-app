@@ -11,6 +11,7 @@ var templateFS embed.FS
 type Templates interface {
 	GetEventListTemplate() (*template.Template, error)
 	GetEventDetailsTemplate() (*template.Template, error)
+	GetCreateEventTemplate() (*template.Template, error)
 }
 
 type templates struct {
@@ -26,4 +27,8 @@ func (t *templates) GetEventListTemplate() (*template.Template, error) {
 
 func (t *templates) GetEventDetailsTemplate() (*template.Template, error) {
 	return template.ParseFS(templateFS, "event-details.gohtml")
+}
+
+func (t *templates) GetCreateEventTemplate() (*template.Template, error) {
+	return template.ParseFS(templateFS, "create-event.gohtml")
 }

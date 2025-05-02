@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/pashagolub/pgxmock/v4"
+	"github.com/quincy/scout-events-app/src/config"
 	"testing"
 	"time"
 )
@@ -11,7 +12,7 @@ import (
 func Test_canFetchSingleEventById(t *testing.T) {
 	mt, err := time.LoadLocation("America/Boise")
 	if err != nil {
-		mt = time.UTC // fallback to UTC if timezone loading fails
+		t.Fatalf("Could not load timezone: %s", err)
 	}
 
 	db, err := pgxmock.NewPool()
@@ -49,7 +50,7 @@ func Test_canFetchSingleEventById(t *testing.T) {
 				"pickup_location",
 			))
 
-	dao := NewEventDao(db)
+	dao := NewEventDao(config.TestConfig, db)
 	event, err := dao.GetEventById(context.Background(), id.String())
 	if err != nil {
 		t.Fatalf("Error getting event by id: %s", err)
@@ -70,7 +71,7 @@ func Test_canTruncateTable(t *testing.T) {
 	db.ExpectExec(`TRUNCATE TABLE events`).
 		WillReturnResult(pgxmock.NewResult("TRUNCATE TABLE", 0))
 
-	dao := NewEventDao(db)
+	dao := NewEventDao(config.TestConfig, db)
 	err = dao.Truncate(context.Background())
 	if err != nil {
 		t.Fatalf("Error truncating table: %s", err)
@@ -91,7 +92,7 @@ func Test_canCountEvents(t *testing.T) {
 	db.ExpectQuery(`SELECT COUNT\(\*\) FROM events`).
 		WillReturnRows(pgxmock.NewRows([]string{"count"}).AddRow(1))
 
-	dao := NewEventDao(db)
+	dao := NewEventDao(config.TestConfig, db)
 	count, err := dao.Count(context.Background())
 	if err != nil {
 		t.Fatalf("Error counting events: %s", err)

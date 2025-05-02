@@ -1,0 +1,10 @@
+
+[database]
+  username = 'admin'
+  password = 'admin'
+  hostname = 'localhost'
+  port = 26257
+  name = 'scouting'
+
+[time]
+  timezone = "America/Boise"

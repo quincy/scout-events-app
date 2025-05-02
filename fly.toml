@@ -10,7 +10,6 @@ primary_region = 'sea'
   dockerfile = 'Dockerfile'
 
 [env]
-DB_DATABASE = 'scouting'
 DB_SSL_ROOT_CERT = '/root.crt'
 LOG_LEVEL = 'info'
 

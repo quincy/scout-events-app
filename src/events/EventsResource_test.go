@@ -2,12 +2,23 @@ package events
 
 import (
 	"github.com/pashagolub/pgxmock/v4"
+	"github.com/quincy/scout-events-app/src/config"
 	"github.com/quincy/scout-events-app/src/templates"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
 )
+
+var testConfig = map[string]string{
+	"DatabaseUsername": "testuser",
+	"DatabasePassword": "testpassword",
+	"DatabaseHostname": "localhost",
+	"DatabasePort":     "5432",
+	"DatabaseName":     "testdb",
+	"Timezone":         "America/Boise",
+}
+var TestConfig = config.NewTestConfig(testConfig)
 
 func Test_CanRenderEventsList(t *testing.T) {
 	db, err := pgxmock.NewPool()
@@ -21,8 +32,8 @@ func Test_CanRenderEventsList(t *testing.T) {
 			AddRow("1", "Troop Meeting1", startTime(-6), endTime(-6), "summary", "description", "event_location", "assembly_location", "pickup_location").
 			AddRow("2", "Troop Meeting2", startTime(4), endTime(4), "summary", "description", "event_location", "assembly_location", "pickup_location"))
 
-	dao := NewEventDao(db)
-	rootResource := NewEventsResource(dao, templates.New())
+	dao := NewEventDao(config.TestConfig, db)
+	rootResource := NewEventsResource(TestConfig, dao, templates.New())
 
 	response := httptest.NewRecorder()
 
@@ -46,25 +57,19 @@ func Test_CanRenderEventsList(t *testing.T) {
 }
 
 func startTime(daysFromNow int) time.Time {
-	mt, err := time.LoadLocation("America/Boise")
-	if err != nil {
-		mt = time.UTC // fallback to UTC if timezone loading fails
-	}
+	timezone := TestConfig.Timezone()
 
-	now := time.Now().In(mt)
-	date := time.Date(now.Year(), now.Month(), now.Day(), 19, 0, 0, 0, mt)
+	now := time.Now().In(timezone)
+	date := time.Date(now.Year(), now.Month(), now.Day(), 19, 0, 0, 0, timezone)
 
 	return date.AddDate(0, 0, daysFromNow)
 }
 
 func endTime(daysFromNow int) time.Time {
-	mt, err := time.LoadLocation("America/Boise")
-	if err != nil {
-		mt = time.UTC // fallback to UTC if timezone loading fails
-	}
+	timezone := TestConfig.Timezone()
 
-	now := time.Now().In(mt)
-	date := time.Date(now.Year(), now.Month(), now.Day(), 21, 0, 0, 0, mt)
+	now := time.Now().In(timezone)
+	date := time.Date(now.Year(), now.Month(), now.Day(), 21, 0, 0, 0, timezone)
 
 	return date.AddDate(0, 0, daysFromNow)
 }

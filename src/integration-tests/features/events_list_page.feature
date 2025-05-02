@@ -52,7 +52,7 @@ Feature: events list
       ]
       """
     When I visit the events list page
-    And I click on the "campout 1" event row
+    And I click the "campout 1" event row
     Then I should see "camping"
     And I should see "Yellowstone National Park"
     And I should see "fun"

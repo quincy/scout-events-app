@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5"
+	"github.com/quincy/scout-events-app/src/config"
 	"github.com/quincy/scout-events-app/src/database"
 	"log"
+	"time"
 )
 
 type EventDao interface {
@@ -14,14 +16,16 @@ type EventDao interface {
 	GetUpcomingEvents(ctx context.Context) ([]Event, error)
 	Truncate(ctx context.Context) error
 	Count(ctx context.Context) (int, error)
+	CreateEvent(ctx context.Context, event Event) (Event, error)
 }
 
 type dao struct {
+	cfg  config.AppConfig
 	conn database.PgxClient
 }
 
-func NewEventDao(conn database.PgxClient) EventDao {
-	return &dao{conn: conn}
+func NewEventDao(cfg config.AppConfig, conn database.PgxClient) EventDao {
+	return &dao{cfg: cfg, conn: conn}
 }
 
 // GetEventById retrieves an event by its ID if it exists.
@@ -50,6 +54,7 @@ func (d *dao) GetEventById(ctx context.Context, id string) (*Event, error) {
 		}
 	}
 
+	event = toLocalTimeZone(event, d.cfg.Timezone())
 	return &event, nil
 }
 
@@ -58,6 +63,7 @@ func (d *dao) CreateEvents(ctx context.Context, entities []Event) error {
 	batch := &pgx.Batch{}
 
 	for _, event := range entities {
+		event = toUTC(event)
 		batch.Queue(`
 	            INSERT INTO events (
 	                id,
@@ -98,6 +104,50 @@ func (d *dao) CreateEvents(ctx context.Context, entities []Event) error {
 	return execErr
 }
 
+func (d *dao) CreateEvent(ctx context.Context, event Event) (Event, error) {
+	var created Event
+
+	event = toUTC(event)
+	err := d.conn.QueryRow(ctx, `
+        INSERT INTO events (
+            id,
+            name,
+            start_time,
+            end_time,
+            summary,
+            description,
+            event_location,
+            assembly_location,
+            pickup_location
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING id, name, start_time, end_time, summary, description, event_location, assembly_location, pickup_location`,
+		event.Id,
+		event.Name,
+		event.StartTime,
+		event.EndTime,
+		event.Summary,
+		event.Description,
+		event.EventLocation,
+		event.AssemblyLocation,
+		event.PickupLocation,
+	).Scan(
+		&created.Id,
+		&created.Name,
+		&created.StartTime,
+		&created.EndTime,
+		&created.Summary,
+		&created.Description,
+		&created.EventLocation,
+		&created.AssemblyLocation,
+		&created.PickupLocation,
+	)
+	if err != nil {
+		return Event{}, fmt.Errorf("failed to insert event: %v", err)
+	}
+
+	return created, nil
+}
+
 // GetUpcomingEvents retrieves all upcoming events.
 // An event is upcoming if its end time is 1 week prior to today or any point in the future.
 func (d *dao) GetUpcomingEvents(ctx context.Context) ([]Event, error) {
@@ -124,7 +174,7 @@ func (d *dao) GetUpcomingEvents(ctx context.Context) ([]Event, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan event row: %v", err)
 		}
-		events = append(events, event)
+		events = append(events, toLocalTimeZone(event, d.cfg.Timezone()))
 	}
 
 	if err = rows.Err(); err != nil {
@@ -157,4 +207,16 @@ func (d *dao) Count(ctx context.Context) (int, error) {
 
 	log.Printf("counted %d events", count)
 	return count, nil
+}
+
+func toUTC(event Event) Event {
+	event.StartTime = event.StartTime.UTC()
+	event.EndTime = event.EndTime.UTC()
+	return event
+}
+
+func toLocalTimeZone(event Event, timezone *time.Location) Event {
+	event.StartTime = event.StartTime.In(timezone)
+	event.EndTime = event.EndTime.In(timezone)
+	return event
 }
