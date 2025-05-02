@@ -33,8 +33,9 @@ jobs:
           docker compose up -d
           sleep 10
 
-      - name: Run application
-        run: DB_HOSTNAME=localhost DB_NAME=scouting DB_PASSWORD=admin DB_PORT=26257 DB_USERNAME=admin go run main.go &
-
       - name: Run Tests
-        run: go test -v ./...
+        # DB_HOSTNAME=localhost DB_NAME=scouting DB_PASSWORD=admin DB_PORT=26257 DB_USERNAME=admin go run main.go &
+        run: |
+          go run main.go &
+          sleep 1
+          go test -v ./...

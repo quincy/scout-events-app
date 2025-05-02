@@ -11,6 +11,10 @@
 
 <main>
 
+  <button id="button-add-event" hx-get="/events:create" hx-target="body" hx-swap="innerHTML" hx-push-url="true">
+    Add Event
+  </button>
+
   <h2>Upcoming Events</h2>
     {{if .}}
       <table id="events-table" data-testid="events-table">

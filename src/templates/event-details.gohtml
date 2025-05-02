@@ -12,33 +12,33 @@
 <main>
 
     {{if .}}
-      <h2>{{.Name}}</h2>
+      <h2 data-field="name">{{.Name}}</h2>
 
       <table id="event-details-table" data-testid="event-details-table">
 
         <tr>
           <td>Date</td>
-          <td>{{.StartTime.Format "2006-01-02"}} - {{.EndTime.Format "2006-01-02"}}</td>
+          <td data-field="start-and-end-times">{{.StartTime.Format "2006-01-02 3:04 PM"}} - {{.EndTime.Format "2006-01-02 3:04 PM"}}</td>
         </tr>
         <tr>
           <td>Location</td>
-          <td>{{.EventLocation}}</td>
+          <td data-field="event-location">{{.EventLocation}}</td>
         </tr>
         <tr>
           <td>Summary</td>
-          <td>{{.Summary}}</td>
+          <td data-field="summary">{{.Summary}}</td>
         </tr>
         <tr>
           <td>Description</td>
-          <td>{{.Description}}</td>
+          <td data-field="description">{{.Description}}</td>
         </tr>
         <tr>
           <td>Assembly Location</td>
-          <td>{{.AssemblyLocation}}</td>
+          <td data-field="assembly-location">{{.AssemblyLocation}}</td>
         </tr>
         <tr>
           <td>Pickup Location</td>
-          <td>{{.PickupLocation}}</td>
+          <td data-field="pickup-location">{{.PickupLocation}}</td>
         </tr>
 
       </table>

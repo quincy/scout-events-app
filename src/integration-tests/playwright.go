@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/cucumber/godog"
 	"github.com/playwright-community/playwright-go"
+	"os"
 )
 
 type playwrightKey struct{} // *playwright.Playwright
@@ -17,14 +18,20 @@ func InitBrowser(ctx context.Context, _ *godog.Scenario) (context.Context, error
 	var err error
 	var browser playwright.Browser
 
-	browser, ok := ctx.Value(browserKey{}).(playwright.Browser)
+	// default to headless mode unless overridden by environment
+	headless, ok := os.LookupEnv("PLAYWRIGHT_HEADLESS")
+	if !ok {
+		headless = "true"
+	}
+
+	browser, ok = ctx.Value(browserKey{}).(playwright.Browser)
 	if !ok {
 		pw, err = getPlaywrightInstance(ctx)
 		if err != nil {
 			return nil, err
 		}
 
-		browser, err = pw.Firefox.Launch(playwright.BrowserTypeLaunchOptions{Headless: playwright.Bool(true)})
+		browser, err = pw.Firefox.Launch(playwright.BrowserTypeLaunchOptions{Headless: playwright.Bool(headless == "true")})
 		if err != nil {
 			return nil, fmt.Errorf("failed to launch browser: %v", err)
 		}

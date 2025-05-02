@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scout Events</title>
+
+  <script src="static/js/htmx.min.js"></script>
+</head>
+<body>
+<h1>Troop 77</h1>
+
+<main>
+
+  <h2>Create Event</h2>
+
+  <form id="create-event-form" hx-post="/events:create" hx-target="body">
+    <label for="name">Event Name</label>
+    <input id="name" type="text" name="name" required/>
+
+    <label for="start_time">Start Time</label>
+    <input id="start_time" type="datetime-local" name="start_time" required/>
+
+    <label for="end_time">End Time</label>
+    <input id="end_time" type="datetime-local" name="end_time" required/>
+
+    <label for="event_location">Event Location</label>
+    <input id="event_location" type="text" name="event_location" required/>
+
+    <label for="summary">Summary</label>
+    <input id="summary" type="text" name="summary" placeholder="Enter a short summary, displayed on the events list page..." required/>
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description" placeholder="Enter the full description of the event..." required></textarea>
+
+    <label for="assembly_location">Assembly Location</label>
+    <input id="assembly_location" type="text" name="assembly_location" value="{{.DefaultAssemblyLocation}}" required/>
+
+    <label for="pickup_location">Pickup Location</label>
+    <input id="pickup_location" type="text" name="pickup_location" value="{{.DefaultPickupLocation}}" required/>
+
+    <button type="submit">Create Event</button>
+  </form>
+
+</main>
+
+</body>
+</html>
