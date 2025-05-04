@@ -34,7 +34,6 @@ jobs:
           sleep 10
 
       - name: Run Tests
-        # DB_HOSTNAME=localhost DB_NAME=scouting DB_PASSWORD=admin DB_PORT=26257 DB_USERNAME=admin go run main.go &
         run: |
           go run main.go &
           sleep 1

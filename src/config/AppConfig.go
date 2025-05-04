@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/ridgelines/go-config"
 	"log"
+	"os"
 	"strconv"
 	"time"
 )
@@ -48,7 +49,22 @@ type appConfig struct {
 }
 
 func ParseConfig() (AppConfig, error) {
-	configFile := config.NewTOMLFile("application.toml")
+	getenv, ok := os.LookupEnv("PROFILE")
+	if !ok {
+		getenv = "local"
+	}
+	var filePath string
+	if getenv == "local" {
+		filePath = "application-local.toml"
+		log.Println("profile=local")
+	} else if getenv == "prod" {
+		filePath = "application-prod.toml"
+		log.Println("profile=prod")
+	} else {
+		return nil, fmt.Errorf("unknown profile: %s", getenv)
+	}
+
+	configFile := config.NewTOMLFile(filePath)
 	envConfig := config.NewEnvironment(configKeys)
 
 	cfg := config.NewConfig([]config.Provider{configFile, envConfig})
