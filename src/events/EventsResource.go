@@ -136,7 +136,6 @@ func (res *resource) CreateEvent(w http.ResponseWriter, r *http.Request) {
 		AssemblyLocation: r.FormValue("assembly_location"),
 		PickupLocation:   r.FormValue("pickup_location"),
 	}
-	log.Printf("Creating event: %v", event)
 
 	// Create the event in the database
 	createdEvent, err := res.eventDao.CreateEvent(r.Context(), event)
