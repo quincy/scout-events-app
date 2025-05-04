@@ -108,3 +108,28 @@ func validate(settings map[string]string) error {
 	}
 	return nil
 }
+
+// TestProvider is a fake implementation of the config.Provider interface
+type TestProvider struct {
+	Values map[string]string
+}
+
+func NewTestConfig(testValues map[string]string) AppConfig {
+	cfg := config.NewConfig([]config.Provider{TestProvider{Values: testValues}})
+	return &appConfig{cfg: cfg}
+}
+
+func (t TestProvider) Load() (map[string]string, error) {
+	return t.Values, nil
+}
+
+var TestConfig = NewTestConfig(
+	map[string]string{
+		dbHostname: "localhost",
+		dbUsername: "admin",
+		dbPassword: "admin",
+		dbPort:     "26257",
+		dbName:     "scouting",
+		timezone:   "America/Boise",
+	},
+)
