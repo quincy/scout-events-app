@@ -74,33 +74,54 @@ func ParseConfig() (AppConfig, error) {
 }
 
 func (a *appConfig) DatabaseHostname() string {
-	value, _ := a.cfg.StringOr(configKeys[dbHostname], defaults[dbHostname])
+	value, err := a.cfg.StringOr(configKeys[dbHostname], defaults[dbHostname])
+	if err != nil {
+		log.Fatalf("Error getting database hostname: %v", err)
+	}
 	return value
 }
 
 func (a *appConfig) DatabaseName() string {
-	value, _ := a.cfg.StringOr(configKeys[dbName], defaults[dbName])
+	value, err := a.cfg.StringOr(configKeys[dbName], defaults[dbName])
+	if err != nil {
+		log.Fatalf("Error getting database name: %v", err)
+	}
 	return value
 }
 
 func (a *appConfig) DatabasePassword() string {
-	value, _ := a.cfg.StringOr(configKeys[dbPassword], defaults[dbPassword])
+	value, err := a.cfg.StringOr(configKeys[dbPassword], defaults[dbPassword])
+	if err != nil {
+		log.Fatalf("Error getting database password: %v", err)
+	}
 	return value
 }
 
 func (a *appConfig) DatabasePort() int {
-	port, _ := strconv.Atoi(defaults[dbPort])
-	value, _ := a.cfg.IntOr(configKeys[dbPort], port)
+	port, err := strconv.Atoi(defaults[dbPort])
+	if err != nil {
+		log.Fatalf("Error converting default port to int: %v", err)
+	}
+	value, err := a.cfg.IntOr(configKeys[dbPort], port)
+	if err != nil {
+		log.Fatalf("Error getting database port: %v", err)
+	}
 	return value
 }
 
 func (a *appConfig) DatabaseUsername() string {
-	value, _ := a.cfg.StringOr(configKeys[dbUsername], defaults[dbUsername])
+	value, err := a.cfg.StringOr(configKeys[dbUsername], defaults[dbUsername])
+	if err != nil {
+		log.Fatalf("Error getting database username: %v", err)
+	}
 	return value
 }
 
 func (a *appConfig) Timezone() *time.Location {
-	value, _ := a.cfg.StringOr(configKeys[timezone], defaults[timezone])
+	value, err := a.cfg.StringOr(configKeys[timezone], defaults[timezone])
+	if err != nil {
+		log.Fatalf("Error getting timezone: %v", err)
+	}
 
 	tz, err := time.LoadLocation(value)
 	if err != nil {
