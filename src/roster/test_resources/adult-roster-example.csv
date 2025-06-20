@@ -1,0 +1,15 @@
+ ,ADULT MEMBERS,,,,,,,,,,,
+ ,First Name,Last Name,Email,Gender,BSA Number,Unit Number,Training,Expiration Date,Health Form A/B - Health Form C,Swim Class,Swim Class Date,Positions
+1,Alice,Ames,aames@example.com,F,1,Troop 77 B,Y01 Youth Protection Training Certification ,03/03/2027,05/06/2025(AB) | 05/06/2025 (C),,,Committee Member
+2,Bob,Brown,bbrown@example.com,M,2,Troop 77 B,Y01 Youth Protection Training Certification  | SCO_800 Hazardous Weather Training ,03/03/2027 | 06/07/2025,05/06/2023(AB) (Expired) | 05/06/2025 (C),,,Assistant Scoutmaster
+3,Carol,Carson,ccarson@example.com,F,3,Troop 77 B,,,05/06/2025(AB) | 05/06/2023 (C) (Expired),,,Chartered Organization Rep.
+4,Dan,Dewey,ddewey@example.com,M,4,Troop 77 B,Y01 Youth Protection Training Certification ,02/22/2027,,,,Committee Member | Unit Advancement Chair
+5,Erin,Eckhart,eeckhart@example.com,F,5,Troop 77 B,Y01 Youth Protection Training Certification ,04/04/2027,02/20/2019(AB) (Expired) | 02/25/2021(C) (Expired),,,Assistant Scoutmaster | Assistant Scoutmaster | Unit Outdoors / Activities Chair
+6,Frank,Faraday,ffaraday@example.com,M,6,Troop 77 B,Y01 Youth Protection Training Certification ,03/03/2027,,,,Unit Scouter Reserve
+7,Gertrude,Grisham,ggrisham@example.com,F,7,Troop 77 B,,,,,,Executive Officer
+8,Harold,Hunt,hhunt@example.com,M,8,Troop 77 B,,,,,,Scoutmaster
+9,Irene,Icabod,iicabod@example.com,F,9,Troop 77 B,Y01 Youth Protection Training Certification ,01/02/2027,05/24/2018(AB) (Expired) | 05/24/2018(C) (Expired),,,Unit College Scouter Reserve
+10,Jeff,Jones,jjones@example.com,M,10,Troop 77 B,Y01 Youth Protection Training Certification  | SCO_800 Hazardous Weather Training ,06/13/2026 | 06/05/2025,03/05/2019(AB) (Expired) | ,Swimmer (01/01/2015),01/01/2015,Assistant Scoutmaster | Unit Training Chair | Youth Protection Champion
+11,Kristina,Kent,kkent@example.com,F,11,Troop 77 B,,,,,,Unit Treasurer
+12,Leonard,Lewis,llewis@example.com,M,12,Troop 77 B,,,,,,Committee Chairman | Life-to-Eagle Coordinator
+13,Mary,Mumford,mmumford@example.com,F,13,Troop 77 B,Y01 Youth Protection Training Certification ,02/21/2026,,,,Committee Membership Coordinator | New Member Coordinator
