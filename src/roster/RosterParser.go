@@ -298,6 +298,7 @@ type YouthScoutbookUser struct {
 	FirstName           string
 	LastName            string
 	BsaId               int64
+	Email               string
 	DateOfBirth         string
 	Age                 int
 	Gender              string
