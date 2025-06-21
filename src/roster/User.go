@@ -19,6 +19,7 @@ type AdultUser struct {
 type YouthUser struct {
 	Name        string
 	BsaId       int64
+	Email       string
 	Gender      string
 	DateOfBirth date.Date
 	Age         int

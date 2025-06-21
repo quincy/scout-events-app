@@ -23,10 +23,10 @@ test-unit:
 	go test -v $(UNIT_TEST_PKGS)
 
 docker-up:
-	docker-compose up -d
+	docker compose up -d
 
 docker-down:
-	docker-compose down
+	docker compose down
 
 app-run:
 	@echo "Starting application..."
